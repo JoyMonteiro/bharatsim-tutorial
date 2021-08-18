@@ -23,5 +23,3 @@ If the value is not computed for a place, the PerTickCache function will compute
         }
 
 
-
-If the value is not computed for a place, the PerTickCache function will compute the value using a user-defined function. 
