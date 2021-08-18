@@ -19,7 +19,3 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-* This is the main heading
-   * This is the sub-heading
-      1. item number 1
-      2. item number 2
