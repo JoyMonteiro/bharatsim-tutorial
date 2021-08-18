@@ -12,14 +12,26 @@ Here when we implement PerTickCache, the infected fraction will be computed for 
 
 If the value is not computed for a place, the PerTickCache function will compute the value using a user-defined function. 
 
-.. note:: A function to compute the infected fraction for an agent in a perticular place using PerTickCache.
+Example for PerTickCache implementation:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: scala
 
-    .. code-block:: scala
+    //This function uses PerTickCache instead of quering the context foe each agent
+    private  def fetchInfectedFraction(node: Node, placeType: String, context: Context): Double = {
+    val cache = context.perTickCache
+    val uniqueKey = (placeType, node.internalId)
+    cache.getOrUpdate(uniqueKey, () => computeTheValue(node)).asInstanceOf[Double]
+    }
 
-        private  def fetchInfectedFraction(node: Node, placeType: String, context: Context): Double = {
-        val cache = context.perTickCache
-        val uniqueKey = (placeType, node.internalId)
-        cache.getOrUpdate(uniqueKey, () => computeTheValue(node)).asInstanceOf[Double]
-        }
+
+    //This is the user defined function for computing the value.
+    private def computeTheValue(node: Node): Double = {
+    val total = node.getConnectionCount(node.getRelation[Person]().get)
+    if (total == 0)
+      return 0.0
+    val infected = node.getConnectionCount(node.getRelation[Person]().get, "infectionState" equ Infected)
+
+    infected.toDouble/total.toDouble
+  }
 
 
