@@ -12,3 +12,4 @@ In this tutorial documentation, we look at examples in Epidemiology.
 
    setup
    Optimization
+   Framework Basics
