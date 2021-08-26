@@ -11,9 +11,5 @@ In this tutorial documentation, we look at examples in Epidemiology.
    :caption: Contents:
 
    setup
-   frameworkbasics
-   epidemiology
-   firstprogram
-   miscellaneous
    Optimization
    Framework Basics
