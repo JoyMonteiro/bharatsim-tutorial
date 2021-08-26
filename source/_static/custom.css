@@ -1,0 +1,10 @@
+/* Modification to make the width 100% of the screen */
+.wy-nav-content {
+    max-width: 100% !important;
+}
+
+/* Modification to make the `manni` theme import colour different */
+/* see _static/pygments.css for full list of possibilities */
+.highlight .nn { color: #1090B0; font-weight: bold } /* Name.Namespace */
+.highlight .nf { color: #7E1099 } /* Colour of "functions" (?) */
+

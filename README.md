@@ -10,7 +10,7 @@ Link: https://bharatsim.readthedocs.io/
 - Move into the repository: `cd bharatsim-tutorial`
 - Install requirements: `pip install -r requirements.txt`
 
-The documentation uses Sphinx with the Furo theme.
+The documentation uses Sphinx with the Sphinx-RTD theme.
 
 ## Documenting BharatSim
 
