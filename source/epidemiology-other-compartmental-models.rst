@@ -56,6 +56,17 @@ If the agent is already infected, we transition them to the ``Removed`` compartm
 
  P_\text{IR} = \lambda_I \Delta t.
 
+Similarly to the SIR model, the average of the stochastic solutions should represent the mean field solution, as seen in the image below
+
+.. figure:: _static/images/epidemiology_SEIR_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SEIR Model
+  :width: 600px
+  :figclass: align-center
+
+  $\lambda_S$=0.6/week, $\lambda_E$=0.5/week, $\lambda_I$=0.25/week
+
+
 The SAIR Model
 --------------
 
@@ -113,6 +124,17 @@ Thus, at each tick $\Delta t$, susceptible individuals are checked for infection
 $$P_\text{Out of S} = \lambda_S \left(\frac{A + I}{N}\right)\Delta t.$$
 
 Now, once they are set to transition, they are either sent to $A$ with a probability $\gamma$, or otherwise they are sent to $I$. The asymptomatic and symptomatic individuals are finally transferred to the ``Removed`` compartment with a probabilities $\lambda_A\Delta t$ and $\lambda_I\Delta t$ respectively.
+
+Once again, we can see the differential equation solutions as the average of the stochastic ones, as demonstrated in the figure below
+
+.. figure:: _static/images/epidemiology_SAIR_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SAIR Model
+  :width: 600px
+  :figclass: align-center
+
+  $\lambda_S$=0.6/week, $\lambda_A$=0.25/week, $\lambda_I$=0.25/week, $\gamma$=0.6
+
 
 We can now add one last level of complexity to this problem: what if we wanted to model a situation in which asymptomatic individuals are *less likely* to infect susceptibles (perhaps because they have a lower viral load) than symptomatics. In this case, we would like to include a sort of "relative risk" of infection from an asymptomatic individual that is smaller than the risk of being infected by a symptomatic individual. In order to do this,  we can introduce some "contact parameters" that modulate the $S\to A$ and $S\to I$ transitions. In this case the differential equations can be written as:
 
