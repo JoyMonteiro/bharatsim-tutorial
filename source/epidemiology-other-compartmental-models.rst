@@ -136,3 +136,53 @@ Thus, if $C_I = 1$ and $C_A = 0.5$, then a single asymptomatic individual is onl
   :class: error
 
   In this case, would setting $\lambda_A = \lambda_I$ reduce this to a simple SIR model, as before? Why not?
+  
+The SIRS Model
+--------------
+
+In the SIR model, the individuals attain life long immunity after getting recovered from the infection, but this is not the case for many diseases. The immunity can decline over time and as a result the recovered individuals can get **reinfected**. The SIRS (``Susceptible`` – ``Infected`` – ``Recovered`` – ``Susceptible``) model allows the transfer of recovered` individuals back to the ``Susceptible`` compartment from where they can get infected again.  The diagram below shows the movement of the individuals through each compartment in an SIRS model.
+
+.. figure:: _static/images/epidemiology_SIRS_disease_progression.png
+    :align: center
+    :alt: The disease progression in the SIRS Model
+    :figclass: align-center
+
+The infectious rate, $\lambda_S$, controls the rate of spread which represents the probability of transmitting disease between a susceptible and an infectious individual. $\lambda_I$ is the recovery rate which can be determined from the average duration of infection.
+$\lambda_R$ is the rate at which the recovered individuals return to the susceptible statue due to loss of immunity.
+
+Ignoring the vital dynamics (births and deaths), in the deterministic form, the SIRS model can be written as the following ordinary differential equations: 
+
+.. math::
+
+ \begin{aligned}
+   \dv{S}{t} &= -\lambda_S \frac{SI}{N} + \lambda_R R \\[10pt]
+   \dv{A}{t} &= \lambda_S \frac{SI}{N} - \lambda_I I \\[10pt]                                                              
+   \dv{R}{t} &= \lambda_I I - \lambda_R R
+   \end{aligned} 
+   
+where the total population is, 
+
+.. math::
+
+ N = S + I + R
+
+On choosing the right parameters, an endemic equilibrium is reached, meaning that the disease never truly dies out, some small fraction of the population is always infected. We could use the SIRS model to include the possibility of reinfection in the SEIR, SAIR models. The plot of a simple SIRS model is shown below: 
+
+.. figure:: _static/images/sirs.png
+    :align: center
+    :alt: Sample run for the SIRS Model
+    :figclass: align-center
+    
+In the algorithm, during each time step $\Delta t$, the individuals are transferred from Susceptible to the Infected and from Infected to the Recovered compartments with the same probability as in an SIR model.
+
+.. math::
+
+ \begin{aligned}
+   \ P_\text{SI} = \lambda_S \frac{I}{N} \Delta t\\
+   \ P_\text{IR} = \lambda_I \Delta t
+ 
+The recovered individuals upon loss of immunity are transferred back to the Susceptible compartment with probability,
+
+.. math::
+
+ P_\text{RS} = \lambda_R \Delta t
