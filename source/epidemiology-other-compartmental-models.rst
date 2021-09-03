@@ -56,6 +56,19 @@ If the agent is already infected, we transition them to the ``Removed`` compartm
 
  P_\text{IR} = \lambda_I \Delta t.
 
+Similarly to the SIR model, the average of the stochastic solutions should represent the mean field solution, as seen in the image below
+
+.. figure:: _static/images/epidemiology_SEIR_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SEIR Model
+  :width: 600px
+  :figclass: align-center
+
+  $\lambda_S$=1.2/14 per day, $\lambda_E$=1/14 per day, $\lambda_I$=1/28 per day, $N$=10,000
+
+  Initial conditions: 1% Infected, 99% Susceptible
+
+
 The SAIR Model
 --------------
 
@@ -113,6 +126,19 @@ Thus, at each tick $\Delta t$, susceptible individuals are checked for infection
 $$P_\text{Out of S} = \lambda_S \left(\frac{A + I}{N}\right)\Delta t.$$
 
 Now, once they are set to transition, they are either sent to $A$ with a probability $\gamma$, or otherwise they are sent to $I$. The asymptomatic and symptomatic individuals are finally transferred to the ``Removed`` compartment with a probabilities $\lambda_A\Delta t$ and $\lambda_I\Delta t$ respectively.
+
+Once again, we can see the differential equation solutions as the average of the stochastic ones, as demonstrated in the figure below
+
+.. figure:: _static/images/epidemiology_SAIR_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SAIR Model
+  :width: 600px
+  :figclass: align-center
+
+  $\lambda_S$=1.2/14 per day, $\lambda_A$=1/28 per day, $\lambda_I$=1/28 per day, $\gamma$=0.6, $N$=10,000
+
+  Initial conditions: 1% Asymptomatic, 99% Susceptible
+
 
 We can now add one last level of complexity to this problem: what if we wanted to model a situation in which asymptomatic individuals are *less likely* to infect susceptibles (perhaps because they have a lower viral load) than symptomatics. In this case, we would like to include a sort of "relative risk" of infection from an asymptomatic individual that is smaller than the risk of being infected by a symptomatic individual. In order to do this,  we can introduce some "contact parameters" that modulate the $S\to A$ and $S\to I$ transitions. In this case the differential equations can be written as:
 
@@ -186,3 +212,27 @@ The recovered individuals upon loss of immunity are transferred back to the Susc
 .. math::
 
  P_\text{RS} = \lambda_R \Delta t
+
+By looking at several stochastic runs and their averages, we can see the a steady state being reached for a certain set of parameters
+
+.. figure:: _static/images/epidemiology_SIRS_steady_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SIRS Model, demonstrating a steady state
+  :width: 600px
+  :figclass: align-center
+
+  $\lambda_S$=1/5 per day, $\lambda_I$=1/20 per day, $\lambda_S$=1/100 per day, $N$=10,000
+
+  Initial conditions: 1% Infected, 99% Susceptible
+
+For identical initial conditions and a different set of parameters, we can see the emergence of a second wave (easily visible by seeing an increase in $R(t)$ from days 150-200)
+
+.. figure:: _static/images/epidemiology_SIRS_wave_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SIRS Model, demonstrating oscillations
+  :width: 600px
+  :figclass: align-center
+
+  $\lambda_S$=2/5 per day, $\lambda_I$=1/5 per day, $\lambda_S$=1/100 per day, $N$=10,000
+  
+  Initial conditions: 1% Infected, 99% Susceptible
