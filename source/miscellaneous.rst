@@ -14,25 +14,25 @@ A ``jar`` file is an executable java file that can be used to run your code.
         sbt shell
 
 2. The shell will display all the ``Main.scala`` files which are present in your directory. Select the one you want to run by typing it's index in the shell.
-   
+
 3. The shell will display all the ``Main.scala`` files which are present in your directory. Select the one you want to run by typing it's index in the shell.
-   
+
 4. Alternatively, you can specify which ``Main.scala`` file you want to run in the ``build.sbt`` file by typing the following command :-
 
     .. figure:: _static/images/jar-doc-4.png
         :align: center
-        
+
         This will run the ``Main`` file in the ``sir\textunderscore ct`` folder
 
 5. The sbt shell will display that the following tests were *unsuccessful*:-
-   
+
         a. item Neo4jProviderTest
         b. item BatchNeo4jProviderTest
         c. item ReadOperationsStreamTest
         d. item WriteOperationsStreamTest
 
 
-Go to ``BharatSim\src\test\scala\com\bharatsim\engine\graph\neo4j`` and comment out (``ctrl + /``) all the lines in the test files for tests (a) and (b). Open the ``queryBatching`` folder in the same directory and comment out all lines for tests (c) and (d). 
+Go to ``BharatSim\src\test\scala\com\bharatsim\engine\graph\neo4j`` and comment out (``ctrl + /``) all the lines in the test files for tests (a) and (b). Open the ``queryBatching`` folder in the same directory and comment out all lines for tests (c) and (d).
 
 1. Open ``BharatSim\target\scala-2.13`` where you will find the new JDK JAR file created. It should have the name``engine-assembly-0.1``. You can now keep the file here or move it to a folder/directory of your choice.
 
@@ -53,8 +53,8 @@ For example, one might want to change the name of the output file everytime they
       def main(args: Array[String]): Unit = {
         outputName = args(0)
         }
-        
-One could use the ``outputName`` and use it in the name of the csv file, for eg. 
+
+One could use the ``outputName`` and use it in the name of the csv file, for eg.
 
 .. code-block:: scala
 
@@ -164,7 +164,7 @@ We then calculate the number of people in each age group who are associated with
       val N_60_100 = decodedLoc.getConnectionCount(decodedLoc.getRelation[Person]().get,
         "age" gte 60).toString
 
-Now, we add this row to ``rows``, the ``ListBuffer`` object 
+Now, we add this row to ``rows``, the ``ListBuffer`` object
 
 .. code-block:: scala
 
@@ -176,7 +176,7 @@ Finally, outside of the iterator, we convert the ``ListBuffer`` to a ``List`` an
 
     rows.toList
 
-Putting it all together, the class is 
+Putting it all together, the class is
 
 .. code-block:: scala
 

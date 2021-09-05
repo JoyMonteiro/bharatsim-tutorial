@@ -33,6 +33,9 @@ release = '0.1'
 extensions = [
     'sphinx_rtd_theme',
     'sphinx_copybutton',
+    'sphinx_math_dollar',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.todo',
     'sphinx.ext.autosectionlabel'
 ]
 
@@ -83,3 +86,16 @@ html_theme_options = {
 html_css_files = [
     'custom.css',
 ]
+
+# MathJax configuration (uses LaTeX physics package)
+
+mathjax3_config = {
+      'tex': {
+        'packages': ['base', 'ams', 'physics'],
+        'inlineMath': [ ['$','$'], ["\\(","\\)"] ]
+      },
+      'loader': {
+        'load': ['ui/menu', '[tex]/ams', '[tex]/physics']
+      }
+}
+todo_include_todos = True
