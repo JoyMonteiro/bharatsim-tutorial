@@ -162,7 +162,7 @@ Thus, if $C_I = 1$ and $C_A = 0.5$, then a single asymptomatic individual is onl
   :class: error
 
   In this case, would setting $\lambda_A = \lambda_I$ reduce this to a simple SIR model, as before? Why not?
-  
+
 The SIRS Model
 --------------
 
@@ -176,56 +176,24 @@ In the SIR model, the individuals attain life long immunity after getting recove
 The infectious rate, $\lambda_S$, controls the rate of spread which represents the probability of transmitting disease between a susceptible and an infectious individual. $\lambda_I$ is the recovery rate which can be determined from the average duration of infection.
 $\lambda_R$ is the rate at which the recovered individuals return to the susceptible statue due to loss of immunity.
 
-Ignoring the vital dynamics (births and deaths), in the deterministic form, the SIRS model can be written as the following ordinary differential equations: 
+Ignoring the vital dynamics (births and deaths), in the deterministic form, the SIRS model can be written as the following ordinary differential equations:
 
 .. math::
 
  \begin{aligned}
    \dv{S}{t} &= -\lambda_S \frac{SI}{N} + \lambda_R R \\[10pt]
-   \dv{A}{t} &= \lambda_S \frac{SI}{N} - \lambda_I I \\[10pt]                                                              
+   \dv{I}{t} &= \lambda_S \frac{SI}{N} - \lambda_I I \\[10pt]
    \dv{R}{t} &= \lambda_I I - \lambda_R R
-   \end{aligned} 
-   
-where the total population is, 
+   \end{aligned}
+
+where the total population is,
 
 .. math::
 
  N = S + I + R
 
-On choosing the right parameters, an endemic equilibrium is reached, meaning that the disease never truly dies out, some small fraction of the population is always infected. We could use the SIRS model to include the possibility of reinfection in the SEIR, SAIR models. The plot of a simple SIRS model is shown below: 
+The main difference between this model and the SIR model is now that because of the possibility of reinfections, there also exists the possibility of multiple _waves_ of infection. In the example below, we can see the emergence of a second wave (easily visible by seeing an increase in $R(t)$ from days 150-200):
 
-.. figure:: _static/images/sirs.png
-    :align: center
-    :alt: Sample run for the SIRS Model
-    :figclass: align-center
-    
-In the algorithm, during each time step $\Delta t$, the individuals are transferred from Susceptible to the Infected and from Infected to the Recovered compartments with the same probability as in an SIR model.
-
-.. math::
-
- \begin{aligned}
-   \ P_\text{SI} = \lambda_S \frac{I}{N} \Delta t\\
-   \ P_\text{IR} = \lambda_I \Delta t
- 
-The recovered individuals upon loss of immunity are transferred back to the Susceptible compartment with probability,
-
-.. math::
-
- P_\text{RS} = \lambda_R \Delta t
-
-By looking at several stochastic runs and their averages, we can see the a steady state being reached for a certain set of parameters, where the disease never dies out and $S(t)$, $I(t)$ and $R(t)$ stay at fixed values:
-
-.. figure:: _static/images/epidemiology_SIRS_steady_stochastic.png
-  :align: center
-  :alt: The stochastic solutions to the differential equations of the SIRS Model, demonstrating a steady state
-  :width: 600px
-  :figclass: align-center
-
-  $\lambda_S$=1/5 day\ :sup:`-1`\ , $\lambda_I$=1/20 day\ :sup:`-1`\ , $\lambda_S$=1/100 day\ :sup:`-1`\ , $N$=10,000
-
-  Initial conditions: 1% Infected, 99% Susceptible
-
-For identical initial conditions and a different set of parameters, we can see the emergence of a second wave (easily visible by seeing an increase in $R(t)$ from days 150-200):
 
 .. figure:: _static/images/epidemiology_SIRS_wave_stochastic.png
   :align: center
@@ -233,6 +201,34 @@ For identical initial conditions and a different set of parameters, we can see t
   :width: 600px
   :figclass: align-center
 
-  $\lambda_S$=2/5 day\ :sup:`-1`\ , $\lambda_I$=1/5 day\ :sup:`-1`\ , $\lambda_S$=1/100 day\ :sup:`-1`\ , $N$=10,000
-  
-  Initial conditions: 1% Infected, 99% Susceptible
+  **Parameters:** $\lambda_S=2/5 \text{ (day)}^{-1}$, $\lambda_I=1/5 \text{ (day)}^{-1}$, $\lambda_R=1/100 \text{ (day)}^{-1}$, $N=10,000$.
+
+  **Initial conditions:** 1% Infected, 99% Susceptible
+
+On choosing the right parameters, an endemic equilibrium can be reached, meaning that the disease never truly dies out: some small fraction of the population is always infected, as shown below.
+
+.. figure:: _static/images/epidemiology_SIRS_steady_stochastic.png
+  :align: center
+  :alt: The stochastic solutions to the differential equations of the SIRS Model, demonstrating a steady state
+  :width: 600px
+  :figclass: align-center
+
+  **Parameters:**  $\lambda_S=1/5 \text{ (day)}^{-1}$, $\lambda_I=1/20 \text{ (day)}^{-1}$, $\lambda_R=1/100 \text{ (day)}^{-1}$, $N=10,000$.
+
+  **Initial conditions:** 1% Infected, 99% Susceptible
+
+
+In the algorithm, during each time step $\Delta t$, the individuals are transferred from Susceptible to the Infected and from Infected to the Recovered compartments with the same probability as in an SIR model.
+
+.. math::
+
+ \begin{aligned}
+   \ P_\text{SI} &= \lambda_S \frac{I}{N} \Delta t\\[10pt]
+   \ P_\text{IR} &= \lambda_I \Delta t
+  \end{aligned}
+
+The recovered individuals upon loss of immunity are transferred back to the Susceptible compartment with probability,
+
+.. math::
+
+ P_\text{RS} = \lambda_R \Delta t
