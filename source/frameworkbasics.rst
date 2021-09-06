@@ -649,7 +649,7 @@ in earlier` to the ``Intervention`` object.
 .. code-block:: scala
 
     val intervention =
-    Intervention(interventionName, activationCondition, deActivationCondition, firstTimeExecution)
+    SingleInvocationIntervention(interventionName, activationCondition, deActivationCondition, firstTimeExecution)
 
 Now we define a new schedule that has to come into effect once the intervention is activated.
 Here we define the ``lockdownSchedule`` such that all agent stays in the house throughout the day.
@@ -688,7 +688,7 @@ The complete definition of ``addLockdown`` using SingleInvocationIntervention is
     context.getCurrentStep >= interventionActivatedAt + 2*14
     }
     val intervention =
-    Intervention(interventionName, activationCondition, deActivationCondition, firstTimeExecution)
+    SingleInvocationIntervention(interventionName, activationCondition, deActivationCondition, firstTimeExecution)
 
     val lockdownSchedule = (myDay, myTick).add[House](0, 1)
 
