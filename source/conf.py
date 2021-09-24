@@ -103,4 +103,4 @@ todo_include_todos = True
 
 # Stops someone from closing the tab by clicking on it while open
 # Basically, you can only cycle between tabs and never remove them from the display
-sphinx_tabs_disable_css_loading = True
+sphinx_tabs_disable_tab_closing = True
