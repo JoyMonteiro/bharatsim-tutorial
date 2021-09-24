@@ -29,3 +29,4 @@ In this tutorial documentation, we look be looking at BharatSim in detail, intro
    firstprogram
    miscellaneous
    Optimization
+   otherexamples
