@@ -4,14 +4,14 @@ Other Compartmental Models
 The SEIR Model
 --------------
 
-This is a generalisation made on the basic SIR model to include the Exposed state of the individuals. The **Exposed** compartment (E) represents incubation period for the disease, that is a latent phase where the individual is infected but not yet infectious. The infected people can infect the ``Susceptible (S)`` people who will be moved to the ``Exposed (E)`` compartment before they are moved to the ``Infected (I)`` compartment. From the infected compartment they will be ``Removed (R)`` eventually.  The diagram below shows how the individuals move through each compartment in this model.
+This is an extension of the basic SIR model to include the Exposed state of the individuals. Some disease pathologies go through a latent phase where an individual hasn’t started infecting others despite being exposed to the disease. The **Exposed** compartment (E) represents this incubation period for the disease. The infected individuals expose the ``Susceptible individuals (S)`` to the disease, moving the latter into the ``Exposed (E)`` compartment before they are moved to the ``Infected (I)`` compartment. From the infected compartment they will be ``Removed (R)`` eventually. (Removed could mean permanently recovered.) The diagram below shows how the individuals move through each compartment in this model.
 
 .. figure:: _static/images/epidemiology_SEIR_disease_progression.png
     :align: center
     :alt: The disease progression in the SEIR Model
     :figclass: align-center
 
-The rate of transmission of the disease from an ``Infected`` to a ``Susceptible`` is represented by :math:`{\lambda_S}`. The incubation rate, :math:`{\lambda_E}`, is the rate of latent individuals becoming infectious. The average time an individual spends in the ``Exposed`` compartment, the incubation period of the disease is thus given by :math:`{1/\lambda_E}`. At last :math:`{\lambda_I}` represents the rate of removal of infected individuals from Infected compartment.
+The rate at which the disease is transmitted from an ``Infected`` to a ``Susceptible`` is represented by :math:`{\lambda_S}` (transmission rate). The incubation rate, :math:`{\lambda_E}`, is the rate of Exposed individuals becoming Infectious. The average time an individual spends in the ``Exposed`` compartment is given by :math:`{1/\lambda_E}`. At last :math:`{\lambda_I}` represents the rate of removal of infected individuals from Infected compartment.
 
 In a closed population with no births or deaths, the SEIR model can be defined using a set of coupled non-linear differential equations described below:
 
@@ -74,14 +74,17 @@ The SAIR Model
 
 In the models we have described so far, we have not distinguished between the *types* of infection in which a disease might manifest itself in a population. In many real-world situations, however, we might need to make this distinction. For example, the disease progression of mildly infected individuals might be very different from severely infected individuals. Let us begin by examining a very basic case: a generalisation of the :ref:`The SIR Model` to include both symptomatic ($I$) and asymptomatic ($A$) individuals. Such a distinction might be important to study the spread of epidemics like `COVID-19 <https://www.nature.com/articles/d41586-020-03141-3>`_, especially because asymptomatic individuals are much more likely to spread the disease as they are hard to indentify without extensive testing and contact tracing. From these compartments the individuals move to the Removed ($R$) compartment, at rates $\lambda_A$ and $\lambda_I$ respectively, as shown in the disease progression below.
 
+In the models described so far, we have assumed that all infections are equal in their severity or intensity. However, in many real-world diseases, the disease manifests itself differently across individuals. For example, some individuals might be mildly infected, some might mount a severe symptomatic response, while others might be entirely asymptomatic.  Accounting for these different types of infections is crucial to accurately model the disease progression through the population. Let us begin by examining a very basic case: a generalisation of the :ref:`The SIR Model` to include both symptomatic ($I$) and asymptomatic ($A$) individuals. Such a distinction might be important to study the spread of epidemics like `COVID-19 <https://www.nature.com/articles/d41586-020-03141-3>`_ and guide understanding and interventions. For instance, asymptomatic individuals might end up spreading the disease far and wide since they are hard to identify without extensive testing and contact tracing. Similarly, if we can predict the trajectory of severe cases, healthcare measures can be taken appropriately. From both these compartments the individuals move to the Removed ($R$) compartment, at rates $\lambda_A$ and $\lambda_I$ respectively, as shown in the disease progression below.
+
+
 .. figure:: _static/images/epidemiology_SAIR_disease_progression.png
     :align: center
     :alt: The disease progression in the SAIR Model
     :figclass: align-center
 
-Let us begin by assuming that there is no difference in the capacity of a single asymptomatic or symptomatic individual to infect a susceptible individual. (It might be, of course, that more asymptomatics are *responsible* for infecting susceptibles because they are less likely to be detected and quarantined, but this is an *emergent* network phenomenon that we will not discuss here.) We call this transition rate out of $S$ $\lambda_S$, as before.
+Initially, we can assume that both asymptomatic and symptomatic individuals infect susceptibles with equal capacity. (In reality, this capacity depends on various nuanced aspects of the disease pathology and the network of interacting individuals. However, we won’t delve into those details here.) We call this transition rate out of $S$, $\lambda_S$, as before.
 
-However, we now have a *branching* that could occur. Once infected, a susceptible person could either move to $A$ or $P$. We thus define another quantity $\gamma$ which is the fraction of the infected individuals who are asymptomatic. The individuals then transit out of $A$ or $I$ with rates $\lambda_A$ or $\lambda_I$ respectively. The set of coupled non-linear differential equations that defines the SAIR model in a closed population are:
+However, now a *branching* event can occur. Once infected, a susceptible person could either move to $A$ or $I$. We thus define another quantity, $\gamma$,  which is the fraction of the infected individuals who are asymptomatic. The individuals then transit out of $A$ or $I$ with rates $\lambda_A$ or $\lambda_I$ respectively. The set of coupled non-linear differential equations that defines the SAIR model in a closed population are:
 
 .. math::
 
@@ -166,14 +169,16 @@ Thus, if $C_I = 1$ and $C_A = 0.5$, then a single asymptomatic individual is onl
 The SIRS Model
 --------------
 
-In the SIR model, the individuals attain life long immunity after getting recovered from the infection, but this is not the case for many diseases. The immunity can decline over time and as a result the recovered individuals can get **reinfected**. The SIRS (``Susceptible`` – ``Infected`` – ``Recovered`` – ``Susceptible``) model allows the transfer of recovered` individuals back to the ``Susceptible`` compartment from where they can get infected again.  The diagram below shows the movement of the individuals through each compartment in an SIRS model.
+In the SIR model, recovered individuals attain life long immunity. However, this is not the case for many diseases. The acquired immunity can decline over time and as a result the recovered individuals can get **reinfected**. The SIRS (``Susceptible`` – ``Infected`` – ``Recovered`` – ``Susceptible``) model allows us to transfer recovered individuals back to the ``Susceptible`` compartment. The diagram below shows the movement of the individuals through each compartment in an SIRS model.
+
 
 .. figure:: _static/images/epidemiology_SIRS_disease_progression.png
     :align: center
     :alt: The disease progression in the SIRS Model
     :figclass: align-center
 
-The infectious rate, $\lambda_S$, controls the rate of spread which represents the probability of transmitting disease between a susceptible and an infectious individual. $\lambda_I$ is the recovery rate which can be determined from the average duration of infection.
+The infectious rate, $\lambda_S$, represents the probability of transmitting disease between a susceptible and an infectious individual. $\lambda_I$ is the recovery rate which can be determined from the average duration of infection. 
+
 $\lambda_R$ is the rate at which the recovered individuals return to the susceptible statue due to loss of immunity.
 
 Ignoring the vital dynamics (births and deaths), in the deterministic form, the SIRS model can be written as the following ordinary differential equations:
