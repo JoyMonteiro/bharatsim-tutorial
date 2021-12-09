@@ -2,8 +2,7 @@
 Introducing a network structure
 ===============================
 
-We can now add an additional layer of complexity, by introducing
-relations between the agents through their home and work locations.
+Consider the semi-realistic scenario where agents can move between different locations like “work” and “home”. We can build a network that accounts for the relationship between agents and locations over time.
 
 .. figure:: _static/images/epidemiology_network_schematic.png
     :align: center
@@ -11,11 +10,7 @@ relations between the agents through their home and work locations.
     :width: 600px
     :figclass: align-center
 
-In such a model, individuals can move between their home and their work
-locations, and as a result the total number of individuals in any given
-location is not fixed. As a result, we now need to go over every
-location, and treat it as a well-mixed location. The algorithm now
-becomes:
+By adding this complexity, we can see that the number of individuals at any given location is not fixed. So we modify our algorithm such that we treat each location as a well-mixed case looping over the instantaneous population at the given location. The modified algorithm is shown in the box below. 
 
 .. admonition:: Algorithm
    :class: tip
