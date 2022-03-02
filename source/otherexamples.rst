@@ -100,6 +100,7 @@ The model is built over an SIR model, with most of the changes being made to thr
     This class generates the csv output.
     
     It returns the following as a row:
+    
     * The time-step
     * The coordinates of the house, if the house contains at least 1 infected person
     * The number of infected people in a house
