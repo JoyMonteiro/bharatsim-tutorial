@@ -1,12 +1,7 @@
 A Basic Introduction to Epidemic Modelling
 ===========================================
 
-The standard technique to model the spread of epidemics is by using
-something called a **compartmental model**. In such models, individuals
-can be in one of a number of compartments (or "states"), and can
-transition between them as time goes by. In the following section we
-will study a very basic, but surprisingly effective model, the **SIR
-model.**
+A standard technique to model the spread of epidemics is through a **compartmental model**. In such models, we divide the population into different categories or compartments according to the infection stage (eg. Susceptible, Infected, Recovered). Since individuals can proceed through the different stages of the infection over time, we also incorporate transition rates between these compartments. In the following section we offer an introduction to a basic, but surprisingly effective compartmental model, the **SIR model**.
 
 .. toctree::
    :caption: Epidemiology

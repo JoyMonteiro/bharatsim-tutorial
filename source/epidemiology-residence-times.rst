@@ -1,17 +1,17 @@
 Residence times in different compartments
 =========================================
 
-An interesting question to ask at this point is this: what is the probability distribution of times that individuals spend in the infected compartment? It turns out that in standard Markov-Chain Monte-Carlo simulations like the ones we study, the residence times are exponentially distributed. Let us try to explore why this is the case, and see if we can change our earlier algorithm to generalise to non-exponential waiting times.
+How long does an individual spend in an infected state or compartment? This duration, also known as residence time, isn’t a fixed value, so it’s important to know the distribution of residence times. In Markov-Chain-Monte-Carlo simulations like ours, the residence times are exponentially distributed. First we will explain why the distribution is exponential, which can allow us to change our algorithm for non-exponential cases.
 
-We are discretising our system into little intervals of time-step $\Delta t$, so that the total time $T= N \Delta t$, where $N$ is the total number of steps. In our disease modelling simulations, we assume that at every step $\Delta t$, an individual has some probability of exiting the compartment they are in, which we will call $p$. (This value of $p$ will depend on many factors, including the number of individuals in that compartment at that time, and so on.)
+We discretise time into small intervals or time-steps of $\Delta t$, so that the total time $T = N \Delta t$, where $N$ is the total number of time-steps. In every small step $\Delta t$ an individual in our disease model has a small probability, $p$, of exiting the compartment. The value of $p$ depends on factors such as the number of individuals in that compartment at that time, and so on.
 
-In order to simulate a probability of $p$, we draw a random number $r$ from a uniform distribution and make the shift if $r<p$. This is just equivalent to saying: $$\begin{equation}\texttt{Make the shift with a probability p}.\end{equation}$$
+To simulate $p$, we draw a random number $r$ from a uniform distribution. If $r < p$, the individual exits the compartment. This is equivalent to saying: $$\begin{equation}\texttt{The probability of exiting the compartment is p}.\end{equation}$$
 
 This is the only role of the uniform distribution here.
 
-Now, let's ask ourselves the following question: *what is the probability that an individual will leave a compartment at some time $t$?* We will call this probability $$\mathcal{P}\dd t,$$ since it's a probability distribution, and so we can't speak of something occuring exactly at time $t$, but rather in an interval of time between $t$ and $t+\dd t$.
+Now, *what is the probability that an individual will leave a compartment at some time $t$?* In our scheme, this is equivalent to asking, what is the probability of the event occurring between $t$ and $t + \Delta t$. We will call this probability $P(t)\Delta t$. We’ve also discretized time into units of $\Delta t$, so we can define $t = n\Delta t$, where $n$ is the number of steps of $\Delta t$.
 
-In our scheme, $t= n \Delta t$, and so the question is equivalent to asking: what is the probability that the individual will leave exactly after $n$ steps. This is:
+This allows us to reframe the problem as, *what is the probability that the individual will leave the compartment after exactly $n$ steps?* This is given by:
 
 $$\text{Prob. that event occurs exactly after $n$ steps} = (1-p)^n p.$$
 
