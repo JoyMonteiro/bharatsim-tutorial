@@ -45,9 +45,8 @@ $$
         if your simulation is running correctly!
 
 By inspecting the equations, you can see that the parameters $\beta$ and $\gamma$ differ in nature. $\gamma$ is just the fraction of infected individuals recovering per day. $\beta$, on the other hand, is a way of quantifying assumption no. 2 from earlier. We want to express that the probability of infection depends on the contact between the infected and the susceptible. This amount of contact is determined by multiplying S and I. We call $\beta$ the transmission coefficient.
- $$\text{Transmission coefficient
-}\beta = \text{Contact probability } \times \text{ Transmission
-rate},$$
+
+$$\text{Transmission coefficient}\beta = \text{Contact probability } \times \text{ Transmission rate},$$
 Each infected individual meets a fraction of the total number of susceptibles and infects them at some “transmission rate”. The “contact probability” decides how the transmission scales with the population. Two specific types of scaling can be chosen, depending on the type of disease.
 
 

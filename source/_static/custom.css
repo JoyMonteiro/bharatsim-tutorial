@@ -8,3 +8,27 @@
 .highlight .nn { color: #1090B0; font-weight: bold } /* Name.Namespace */
 .highlight .nf { color: #7E1099 } /* Colour of "functions" (?) */
 
+
+/* Modification to change colour of sidebar background and font */
+{% extends "!layout.html" %}
+  {% block footer %} {{ super() }}
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    /* This was supposed to change the top, but ultimately
+       the top colour was changed by adding 'style_nav_header_background': '#392f75'
+       to conf.py */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #000000 ;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #392f75;
+    }
+
+    /* Change colour of captions for headers in TOC */
+    .wy-menu-vertical header, .wy-menu-vertical p.caption{
+      color: #00c0b5;
+    }
+  </style>
+{% endblock %}

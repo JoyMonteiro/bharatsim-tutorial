@@ -64,7 +64,10 @@ html_static_path = ['_static']
 
 
 # Logo
-html_logo = "_static/logos/bharatsim-temporary-logo.png"
+html_logo = "_static/logos/bharatsim-logo-color.svg"
+
+# Favicon
+html_favicon = '_static/logos/bharatsim-logo-mark.svg'
 
 # If true, “Created using Sphinx” is shown in the HTML footer. Default is True.
 html_show_sphinx = False
@@ -82,6 +85,7 @@ html_theme_options = {
     'logo_only': True,
     'navigation_depth': 5,
     'style_external_links': True,
+    'style_nav_header_background': '#392f75'
 }
 
 html_css_files = [
