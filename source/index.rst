@@ -32,3 +32,4 @@ In this tutorial documentation, we look be looking at BharatSim in detail, intro
    miscellaneous
    Optimization
    otherexamples
+   knownissues
