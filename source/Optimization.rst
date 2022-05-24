@@ -90,8 +90,8 @@ We now iterate over the nodes, typecaste them to the ``Person`` class, check the
 
     nodes.foreach(node => {
       val infectedState = node.as[Person].infectionState
-      val exitingCount = countMap.getOrElse(infectedState, 0)
-      countMap.put(infectedState, exitingCount + 1)
+      val existingCount = countMap.getOrElse(infectedState, 0)
+      countMap.put(infectedState, existingCount + 1)
     })
 
 .. hint::
@@ -162,8 +162,8 @@ Putting it all together, the class ``SIROutputSpec`` is as follows:
         val nodes = graphProvider.fetchNodes(label)
         nodes.foreach(node => {
           val infectedState = node.getParams.apply("infectionState").toString
-          val exitingCount = countMap.getOrElse(infectedState, 0)
-          countMap.put(infectedState, exitingCount + 1)
+          val existingCount = countMap.getOrElse(infectedState, 0)
+          countMap.put(infectedState, existingCount + 1)
         })
 
         val row = List(
