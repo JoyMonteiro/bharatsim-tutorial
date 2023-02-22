@@ -1,7 +1,7 @@
 Getting Started
 ===============
 
-The BharatSim framework is written in Scala 2, so once the source code is obtained, a development environment needs to be set up.
+The BharatSim framework is written in Scala 2, so once the source code is obtained, a development environment needs to be set up. The following set of instructions need to be followed to obtain the said development environment. 
 
 
 Setup Requirements
@@ -22,7 +22,7 @@ Installing JDK
 
 Java 8 or 11 can be installed from Oracle or through OpenJDK.
 
-`Download OpenJDK <https://adoptopenjdk.net/>`_. OpenJDK 8 or 11 with Hotspot JVM is fine.
+`Download OpenJDK <https://adoptium.net/temurin/releases/?version=11>`_. Choose the appropriate operating system with x64 JDK with versions 8 or 11. 
 
 Installing Scala with Coursier
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,8 +39,13 @@ Once ``cs`` is downloaded, run:
 
     $ ./cs setup
 
-This will install and setup Scala and related tools.
+To check whether the set up was successful, run:
 
+.. code-block:: console
+
+    $ scala -version  
+
+If the version along with a copyright notice is not returned, then reboot the system and try running the above line of code again. 
 
 Setting up an IDE and First Run
 -------------------------------
@@ -103,16 +108,18 @@ Visual Studio Code
 
   Let's open the Project. The following steps are assuming the source code directory is named ``BharatSim``.
 
-* Go to File --> Open Folder, and select the ``BharatSim`` folder. When prompted by VSCode, click on **Import Build**.
+* Go to File --> Open Folder, and select the ``BharatSim`` folder. When prompted by VSCode, click on **Import Build**. This uses an open source tool called sbt to compile and test Scala projects.
 
   * If you miss it somehow, go to View --> Command Palette [or press ``CTRL+SHIFT+P``] and search for "Import build". Click on "Metals: Import build" and sit back for a while as VSCode goes through the project structure and builds the project. If you are unable to find such an option, make sure you installed the Metals extension. Restart VSCode if needed.
+
+    .. error:: If there is an error notification during the import build process, click on the "more information" option. A new tab will open called Metal Doctor and it will display the source of the error. If the error is in Debugging, then the warning can be ignored and set up process can be carried on. 
 
 * Now, we **run the SIR Model**. SIR is a simple compartmental model to analyze epidemics, where a person can be either Susceptible (S), Infected (I) or Recovered (R). We will see SIR Model in detail in the Epidemiology section.
 
   * In VSCode, on the left is the project directory structure and tree. Navigate to ``BharatSim/src/main/scala/com/bharatsim/examples/epidemiology/sir`` and open the ``Main.scala`` file.
   * There will again be a ``run | debug`` above the line containing ``object Main``. Click on ``run``.
 
-    .. error:: If it gives an error like ``Ingestion Failed : java.nio.file.NoSuchFileException: citizen10k.csv``, make sure there is a file named ``citizen10k.csv`` inside the BharatSim folder. If it is not present, it might have been mistakenly deleted or misplaced. Get the source code again in that case.
+    .. error:: If it gives an error like ``Ingestion Failed : java.nio.file.NoSuchFileException: citizen10k.csv``, make sure there is a file named ``citizen10k.csv`` inside the BharatSim folder. If it is not present, it might have been mistakenly deleted or misplaced. Get the source code again in that case. If the problem persists, then copy the ``citizen.csv`` and place it in the main folder ``BharatSim``.
 
   * Wait till the program finishes running. At the end, it should look like this:
 
@@ -127,9 +134,9 @@ If you reached till here, Congratulations! VSCode is setup and working correctly
 Running Scala on Command Line
 -----------------------------
 
-Let's assume the source code directory is named ``BharatSim``. Navigate to the directory in terminal.
+Let's assume the source code directory is named ``BharatSim``. Navigate to the directory in terminal. The sbt tool is often utilized to build a project, which is nothing but compiling,  running and testing the project. It also offers the capability of executing each of these processes individually.
 
-* Build the project:
+* Compile the project:
 
   .. code-block:: console
 
@@ -137,9 +144,9 @@ Let's assume the source code directory is named ``BharatSim``. Navigate to the d
 
 * Now, we **run the SIR Model**. SIR is a simple compartmental model to analyze epidemics, where a person can be either Susceptible (S), Infected (I) or Recovered (R). We will see SIR Model in detail in the Epidemiology section.
 
-  * Do ``sbt run`` and select the class number associated to ``com.bharatsim.examples.epidemiology.sir.Main``. It should start running the simulation. It may appear as if the class number is not being typed, but it is! Just input the number and press ENTER.
+  * Do ``sbt run`` and wait for a still of main classes to appear on the screen. Select the class number associated to ``com.bharatsim.examples.epidemiology.sir.Main``. It may appear as if the class number is not being typed, but it is! Just input the number and press ENTER . It should start running the simulation.
 
-    .. error:: If it gives an error like ``Ingestion Failed : java.nio.file.NoSuchFileException: citizen10k.csv``, make sure there is a file named ``citizen10k.csv`` inside the BharatSim folder. If it is not present, it might have been mistakenly deleted or misplaced. Get the source code again in that case.
+    .. error:: If it gives an error like ``Ingestion Failed : java.nio.file.NoSuchFileException: citizen10k.csv``, make sure there is a file named ``citizen10k.csv`` inside the BharatSim folder. If it is not present, it might have been mistakenly deleted or misplaced. Get the source code again in that case. If the problem persists, then copy the ``citizen.csv`` and place it in the main folder ``BharatSim``.
 
     It should look like this:
 
@@ -149,6 +156,6 @@ Let's assume the source code directory is named ``BharatSim``. Navigate to the d
 
 This is how Scala programs can be run through the command line.
 
-.. tip:: Simply typing ``sbt`` will run the sbt console. The other commands can now be run in succession simply as ``compile``, ``run`` and more.
+.. tip:: Another way to operate Scala through the command line is to simply type ``sbt`` and run the sbt console. The other commands can now be run in succession simply as ``compile``, ``run`` and more.
 
   .. image:: _static/images/sbt-console.png
