@@ -108,7 +108,7 @@ Visual Studio Code
 
   Let's open the Project. The following steps are assuming the source code directory is named ``BharatSim``.
 
-* Go to File --> Open Folder, and select the ``BharatSim`` folder. When prompted by VSCode, click on **Import Build**. This uses an open source tool called sbt to compile and test Scala projects.
+* Go to File --> Open Folder, and select the ``BharatSim`` folder. When prompted by VSCode, click on **Import Build**. This uses an open source tool called ``sbt`` to compile and test Scala projects.
 
   * If you miss it somehow, go to View --> Command Palette [or press ``CTRL+SHIFT+P``] and search for "Import build". Click on "Metals: Import build" and sit back for a while as VSCode goes through the project structure and builds the project. If you are unable to find such an option, make sure you installed the Metals extension. Restart VSCode if needed.
 

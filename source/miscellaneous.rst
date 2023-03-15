@@ -4,42 +4,42 @@ Miscellaneous
 Assembling an Executable Jar file
 ---------------------------------
 
-A ``jar`` file is an executable java file that can be used to run your code.
+A ``jar`` file is an executable java file that can be used to run your code. Instead of importing and building the whole project, it is more efficient to convert the source code into a ``jar`` and import it as a library. This way the environment will be clutter free and all the classes and functions can be easily imported.
 
-1.  Go to the sbt shell in IntelliJ, and type ``assembly``
+1.  Open the Project in IntelliJ and go to the sbt shell, and type ``assembly``
 
     .. figure:: _static/images/jar-doc-1.png
         :align: center
+  
+2. On executing ``assembly``, the sbt shell will display that the following tests were unsuccessful
 
-        sbt shell
+  a. Neo4jProviderTest
+  b. BatchNeo4jProviderTest
+  c. ReadOperationsStreamTest
+  d. WriteOperationsStreamTest
 
-2. The shell will display all the ``Main.scala`` files which are present in your directory. Select the one you want to run by typing it's index in the shell.
+3. The only to bypass the above errors is to navigate to these files and completely comment them out. These can be done by selecting all the line and doing ``ctrl + /`` . 
 
-3. The shell will display all the ``Main.scala`` files which are present in your directory. Select the one you want to run by typing it's index in the shell.
+.. note:: The path specified in the console is only partially correct. The actuall path of these files are ``BharatSim\src\test\scala\com\bharatsim\engine\graph\neo4j`` and not just ``com\bharatsim\engine\graph\neo4j``. The shell is in the ``test\scala`` directory and specifies the path from there.
 
-4. Alternatively, you can specify which ``Main.scala`` file you want to run in the ``build.sbt`` file by typing the following command :-
+4. On opening the root folder, you can find the ``bharatsim-library.jar`` file. 
 
-    .. figure:: _static/images/jar-doc-4.png
-        :align: center
+Importing a Jar file as a Library
+---------------------------------
 
-        This will run the ``Main`` file in the ``sir\textunderscore ct`` folder
+As mentioned in the above section, importing the whole source code as a jar file is highly efficient and recommended, especially for a novice coder. In the root folder of the project, create a new folder called ``lib`` unless one already exists. Copy the jar file and paste it into the ``lib`` folder. 
 
-5. The sbt shell will display that the following tests were *unsuccessful*:-
+1. Go to file option in IntelliJ and click on the option "Project structure". 
 
-        a. item Neo4jProviderTest
-        b. item BatchNeo4jProviderTest
-        c. item ReadOperationsStreamTest
-        d. item WriteOperationsStreamTest
+2. Select "modules" on the left side panel, and select the "dependencies" option. A list of files should appear. 
 
+3. There should be a "+" option and select the Library followed by Java. 
 
-Go to ``BharatSim\src\test\scala\com\bharatsim\engine\graph\neo4j`` and comment out (``ctrl + /``) all the lines in the test files for tests (a) and (b). Open the ``queryBatching`` folder in the same directory and comment out all lines for tests (c) and (d).
+4. Select the required jar file in the lib folder. Click on ``Apply`` and then ``ok`` button to import the jar file. 
 
-1. Open ``BharatSim\target\scala-2.13`` where you will find the new JDK JAR file created. It should have the name``engine-assembly-0.1``. You can now keep the file here or move it to a folder/directory of your choice.
+.. error:: If the package or a class from the library is not available, then make sure the jar file has been imported successfully. Once common source of error is not clikcing on the ``Apply`` button before selecting ``ok`` as mentioned in Step 4. 
 
-2. Open a terminal (powershell/gitbash/linux shell, etc.) in the directory/folder in which you have saved your JDK JAR file and type ``java -jar jarfilename``.
-
-    .. figure:: _static/images/jar-doc-3.png
-        :align: center
+Importing packages and classes can be done as before using the same syntax. 
 
 Using args in main method
 -------------------------
