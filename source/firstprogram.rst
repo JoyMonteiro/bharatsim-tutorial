@@ -1,16 +1,16 @@
-Writing your First Program:
-===========================
+Writing your First Program
+==========================
 
 This section is a detailed guide for a novice user on how to build a `SIR Model <https://bharatsim.readthedocs.io/en/latest/epidemiology-sir-model.html>`_ in BharatSim from scratch. By the end of this section, you should be able to write and execute a SIR model by yourself.
 
-Any model built on this framework contains various classes which are essentially extensions of different Nodes. To build a SIR model from scratch, one needs to define the said classes and the properties and relationships associated with them. In the basic SIR there are two main components:
+Any model built on this framework contains various classes which are essentially extensions of different `Nodes <https://bharatsim.readthedocs.io/en/latest/epidemiology.html>`_ . To build a SIR model from scratch, one needs to define the said classes and the properties and relationships associated with them. In the basic SIR there are two main components:
 
-1. `Agent`
-2. `Network`
+1. `Agents <https://bharatsim.readthedocs.io/en/latest/epidemiology.html>`_ 
+2. `Network <https://bharatsim.readthedocs.io/en/latest/epidemiology.html>`_ 
 
 Agents are simply the individuals in the population and the Network is a class that defines a node that multiple agents frequent. Network classes can be used to model -- for example -- physical locations where different Agents come in contact with one another.
 
-Here, we begin writing our program assuming that every agent is in contact with every other agent, which is equivalent to all of them being in the same "location.
+Here, we begin writing our program assuming that every agent is in contact with every other agent, which is equivalent to all of them being in the same "location".
 
 
 Single Location SIR
@@ -22,7 +22,7 @@ Creating an Empty Class
 ^^^^^^^^^^^^^^^^^^^^^^^
 Create a new project in the required directory. There is no need to create a new folder, as creating a new project automatically creates a new folder. Name this folder ``sir`` and change the language to scala. The build system should be chosen to be sbt. 
 
-Navigate to ``src\main\scala`` and right click on the folder in IntelliJ. Select a new package and rename it sir. Again right click on sir package, select a Scala class followed by object. Call this object Main. 
+Navigate to ``src\main\scala`` and right click on the folder in IntelliJ. Select a new package and rename it sir. Again right click on sir package, select a Scala class followed by object. Call this object ``Main``. 
 
 The empty class should look like this. 
 
@@ -35,7 +35,7 @@ Now we can define a main function that has no input and has no output. The synta
     def main(args: Array[String]): Unit = {
     }
 
-The ``args`` means that the argument or the input is an array of Strings and the output is of type Unit, which corresponds to void means that there is no output. The code should look like this, 
+The ``args`` means that the argument or the input is an array of Strings and the output is of type ``Unit``, which corresponds to void means that there is no output. The code should look like this, 
 
 .. note:: void return means that the function returns nothing at all. Remember nothing is different from 0, or empty list. 
 
@@ -64,7 +64,7 @@ Before we can input a file or simulate a disease, we need to make a few classes 
 
   .. group-tab:: Disease.scala
 
-    Much like InfectionStatus, this is also a scala object class and this stores the characteristics of the disease; the beta value and the when the infection will end. 
+    Much like ``InfectionStatus``, this is also a scala object class and this stores the characteristics of the disease; the beta value and the when the infection will end. 
 
     * Final val: this value can not be over-written in any other class or function. 
 
@@ -79,10 +79,10 @@ Before we can input a file or simulate a disease, we need to make a few classes 
 
   .. group-tab:: Person.scala
 
-    This is also a scala case class. This class decribes the behaviours of the individuals in the Network, how their schedule looks like, the manner in which they can get infected and recovered. Since this is a simple case, only the relationship should be taken care of.
+    This is also a scala case class. This class decribes the behaviours of the individuals in the ``Network``, how their schedule looks like, the manner in which they can get infected and recovered. Since this is a simple case, only the relationship should be taken care of.
 
-    * Age and Infection day are of type Int. There are only a limited number of values these variables can take and hence datatype Int will be suffice.
-    * The data type of ID is long since there are many citizens and larger data space is required than Int and hence long is used. 
+    * ``Age`` and ``Infection`` day are of type Int. There are only a limited number of values these variables can take and hence datatype Int will be suffice.
+    * The data type of ``ID`` is long since there are many citizens and larger data space is required than Int and hence long is used. 
 
 
 
@@ -174,13 +174,13 @@ There needs to be a modification in the line where we have defined the object. W
 
   object Main extends LazyLogging
 
-By extending LazyLogging, all the properties of this class are made available in Main. The LazyLogging class allows the user to display or output information. It can be thought of as better version of SystemOut.
+By extending ``LazyLogging``, all the properties of this class are made available in ``Main``. The ``LazyLogging`` class allows the user to display or output information. It can be thought of as better version of ``SystemOut``.
 
 .. note:: When libraries or variables are not being used they appear grey in color, and as soon as they are called, they become colored again
 
-Since LazyLogging is being used, it changes color from grey. 
+Since ``LazyLogging`` is being used, it changes color from grey. 
 
-The next step is to define a private value called initialInfectedFraction and set it to 0.01. Private value means that this will only be available in the defining class and not outside. This will be made accessible to the function we are about to define. 
+The next step is to define a private value called ``initialInfectedFraction`` and set it to 0.01. Private value means that this will only be available in the defining class and not outside. This will be made accessible to the function we are about to define. 
 
 In the main function we had earlier defined, we can create an instance of the simulation class. 
 
@@ -201,9 +201,9 @@ Then we ingest the csv file in the following manner
 
 Here ``csvDataExtractor`` is a user defined function which we will get to later. 
 
-On running the code, an error pops up displaying that csvDataExtractor is not defined. 
+On running the code, an error pops up displaying that ``csvDataExtractor`` is not defined. 
 
-The csvDataExtractor function is defined in the following manner
+The ``csvDataExtractor`` function is defined in the following manner
 
 .. code-block:: scala
   
@@ -216,7 +216,7 @@ Once the function is defined and we need it to the following things,
 2. `CSV header and corresponding values`
 3. `Return the data in the form of GraphData`
 
-The first step depends on the CSV file that is being imported since it depends on the headers of the data. In BharatSim the CSV files usually have the following columns, 
+The first step depends on the CSV file that is being imported since it depends on the headers of the data. In BharatSim, the CSV files usually have the following columns, 
 
 .. code-block:: scala
 
@@ -243,7 +243,7 @@ If the ``biasedCoinToss`` returns true, then the citizen analyzed is infected fr
     0
     )
 
-Once this is done, relationships need to be established that will connect the nodes on the graph. The citizen will ``Stay At`` the house, and the house will ``House`` the citizen. The relationship needs to be established both the ways, as the first relationship links the citizen node to the house node and the second one links the house node to the citizen one. 
+Once this is done, ``relationships`` need to be established that will connect the nodes on the graph. The citizen will ``Stay At`` the house, and the house will ``House`` the citizen. The ``relationship`` needs to be established both the ways, as the first relationship links the citizen node to the house node and the second one links the house node to the citizen one. 
 
 .. code-block:: scala
   
@@ -254,7 +254,7 @@ Once this is done, relationships need to be established that will connect the no
 .. note:: A House “HOUSES” an Agent and an Agent “STAYS_AT” a House so these two relations are inherently reflections of each other. The first relation is specified in the House class, while the second one is specified in the Person class (Refer to the classes above). The same defination of relationships can be extended to any pair of Agents (Student, Employer) and corresponding locations (School, Office). 
 
 
-Then we create an instance of the GraphData and add the aforementioned nodes and relationships
+Then we create an instance of the ``GraphData`` and add the aforementioned nodes and relationships
 
 .. code-block:: scala
 
@@ -333,11 +333,11 @@ A new class called ``SIROutputSpec`` needs to be created and the ``Person`` clas
 
     As mentioned earlier, this is the updated version of the class we have written earlier. In the previous version, we had only defined the relation and nothing else. The first thing to do is to add a schedule followed by checking the InfectedStatus of the individuals and the people around. The latter is done so we can look at the probability of getting infected and then do a coin toss with this probability to determine if the person in question does get infected.
 
-    * numberOfTicksInADay is used to define how many Ticks a person experiences is a day. Since the duration of the infection (in days) is fixed, the numberOfTicksInADay will dictate the increments in the simulation. 
+    * numberOfTicksInADay is used to define how many ``Ticks`` a person experiences is a day. Since the duration of the infection (in days) is fixed, the ``numberOfTicksInADay`` will dictate the increments in the simulation. 
     * incrementInfectionDuration updates the day in the simulation. This is done after all the ticks have been completed in the day, and only after this can we move to the next day.
-    * checkForInfection is a function that is used to check whether a susceptible individual gets infected. If the location is not empty, then the number of people present at that location are counted and are infected and this is stored as infectedNeighbourCount. Using these value, a appropriate biased coin toss is done and if it comes ``True``, then the susceptible individual contracts the disease. The InfectionStatus will changed from susceptible to infected
-    * checkForRecovery looks at infected individuals and if the last day for infection has been reached, then the InfectionStatus changes from Infected to Recovered. 
-    * isSusceptible, isInfected, isRecovered changes the infection status to Susceptible, Infected, Recovered respectively. 
+    * checkForInfection is a function that is used to check whether a susceptible individual gets infected. If the location is not empty, then the number of people present at that location are counted and are infected and this is stored as ``infectedNeighbourCount``. Using these value, an appropriate biased coin toss is done and if it comes ``True``, then the susceptible individual contracts the disease. The ``InfectionStatus`` will changed from susceptible to infected
+    * checkForRecovery looks at infected individuals and if the last day for infection has been reached, then the ``InfectionStatus`` changes from ``Infected`` to ``Recovered``. 
+    * isSusceptible, isInfected, isRecovered changes the infection status to ``Susceptible``, ``Infected``, ``Recovered`` respectively. 
     * decodeNode take the string and return the corresponding node.
     * We then add behaviour for each of the states. 
 
@@ -510,7 +510,7 @@ After we ingest the data in the main function, we need to define the Simulation 
       logger.info("Total time: {} s", (endTime - startTime) / 1000)
     }
 
-In the defineSimulation, we call upon a function called createSchedules. The following piece of code will define this function
+In the ``defineSimulation``, we call upon a function called ``createSchedules``. The following piece of code will define this function
 
 .. code-block:: scala 
 
@@ -525,7 +525,7 @@ In the defineSimulation, we call upon a function called createSchedules. The fol
 
 .. note:: ``add[House](0,23)`` means that we are creating a 24 hour schedule associated with the location House. In the framework, 0 to 0 is counted as 1 hour.
 
-printStats simply prints the values in the output message window and it finds these values by calling user defined like getSusceptibleCount. These functions look at the node on the graph and then count the people present in the node. 
+``printStats`` simply prints the values in the output message window and it finds these values by calling user defined like ``getSusceptibleCount``. These functions look at the node on the graph and then count the people present in the node. 
 
 .. code-block:: scala 
     
@@ -836,14 +836,14 @@ The csvDataExtractor function is the same and changes are made after the nodes (
       graphData.addRelations(studiesAt, studentOf)
     }
 
-After this distinction has been made, the changes in schedules have to be made. Employee and student schedule are just when they leave for their the house and when they return. First we need to define an hour to be ``myTick`` and there are 24 hours in ``myDay``. Before create24HourSchedules can be made, ``myTick`` and ``myDay`` needs to be defined outside the main function. 
+After this distinction has been made, the changes in schedules have to be made. Employee and student schedule are just when they leave for their the house and when they return. First we need to define an hour to be ``myTick`` and there are 24 hours in ``myDay``. Before ``create24HourSchedules`` can be made, ``myTick`` and ``myDay`` needs to be defined outside the main function. 
 
 .. code-block:: scala 
 
     private val myTick: ScheduleUnit = new ScheduleUnit(1)
     private val myDay: ScheduleUnit = new ScheduleUnit(myTick * 24)
 
-With these values defined, create24HourSchedules can be made. However, when there are more than one schedules running, there needs to be a priority list that needs to be made. In this case, Student and Employee schedules are independent of each other so a either schedules can be prioritized over the other. In later cases, quarantine will be introduced where individuals will stay at their house the whole time and this gets priority over office and school schedules. 
+With these values defined, ``create24HourSchedules`` can be made. However, when there are more than one schedules running, there needs to be a priority list that needs to be made. In this case, Student and Employee schedules are independent of each other so a either schedules can be prioritized over the other. In later cases, quarantine will be introduced where individuals will stay at their house the whole time and this gets priority over office and school schedules. 
 
 .. code-block:: scala 
 
@@ -1030,7 +1030,7 @@ Various social interventions can be made such as quarantine as explained in the 
 Quarantine
 ^^^^^^^^^^
 
-Quarantine can be brought into effect by forcing a schedule onto the people where everyone stays at their respective house. In create24HourSchedules everyone can be made to stay at home from 0 to 23, and this can be given the number 1 priority. When brought into effect, the school and office schedules will be ignored and the quarantine schedules will be abided by. 
+Quarantine can be brought into effect by forcing a schedule onto the people where everyone stays at their respective house. In ``create24HourSchedules`` everyone can be made to stay at home from 0 to 23, and this can be given the number 1 priority. When brought into effect, the school and office schedules will be ignored and the quarantine schedules will be abided by. 
 
 .. code-block:: scala
 
