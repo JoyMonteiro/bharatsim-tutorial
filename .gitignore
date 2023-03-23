@@ -1,3 +1,6 @@
+# Site build files
+_site/
+
 # Build files
 build/
 
