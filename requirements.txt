@@ -1,4 +1,4 @@
-Sphinx==4.1.2
+Sphinx
 sphinx-rtd-theme
 sphinx-copybutton
 sphinx-math-dollar
