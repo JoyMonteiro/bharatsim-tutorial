@@ -131,7 +131,7 @@ Putting it all together, our user-defined ``myCsvDataExtractor`` function is
 
 .. code-block:: scala
 
-  private def myCsvDataExtractor(map: Map[String, String](implicit context: Context): GraphData = {
+  private def myCsvDataExtractor(map: Map[String, String])(implicit context: Context): GraphData = {
 
     val catName = map("Name").toString
     val catID = map("ID").toLong
