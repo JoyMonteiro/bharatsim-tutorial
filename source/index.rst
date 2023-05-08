@@ -27,9 +27,8 @@ In this tutorial documentation, we look be looking at BharatSim in detail, intro
    :caption: The Simulation Engine
 
    setup
-   frameworkbasics
+   frameworkbasics 
    firstprogram
    miscellaneous
-   Optimization
    otherexamples
    knownissues
