@@ -9,7 +9,23 @@ Graph, Nodes and Relations
 
 Graph is the basic data structure, in which data is stored. It is composed of different ``Nodes`` and ``Relations``. ``Node`` is the basic unit of the canvas (``Graph``) on which the simulation is built. There can be multiple nodes on the graph, and each of these nodes is specified by a unique 64-bit id. Each of these nodes is connected to each other by a ``Relation``. Only a single relation can exist between two ``Node``, and in case multiple relations are defined between two nodes, then the simulation will not know which ``Relation`` to pick, and hence will throw an error. In the framework, there are various functions present that can be used to obtain relations of one ``Node``, and can delete or update ``Relation`` and ``Nodes``. 
 
+.. figure:: _static/images/FSM_class.png
+  :align: center
+  :width: 900px
+  :figclass: align-center
+
+  Different User defined nodes present such as Person, Home, and Work. 
+
+
 To illustrate the point, common ``Node`` in the BharatSim Framework are ``School``, ``Office``, and ``House``. Each of these Schools, Offices and Houses are connected to each other by user-defined ``Relations``. An example of ``Relations`` is when a Person ``works at`` Office, and the Office is an ``Employer of`` Person. Thus relations ``Works at`` and ``Employer of`` connects the ``Person`` and ``Office`` class. 
+
+.. figure:: _static/images/FSM_relations.png
+  :align: center
+  :width: 900px
+  :figclass: align-center
+
+  Illustration of a bidirectional relationship between two nodes.
+
 
 Agent and Behaviours
 --------------------
@@ -19,6 +35,13 @@ Agent and Behaviours
 At each time step, an agent may execute an action and these actions are called ``Behaviours``. These behaviours can be modelled depending on the situation the agent finds itself in. For example, if the agent has not contracted the disease, then they have a “choice” to get vaccinated at every time step, and whether they execute this choice is  dependent on a probability.  
 
 Therefore, the ``Agent`` along with their ``behaviours`` mimic people in a population, and the more detailed the attributes and behaviours get, the better the mimicking will get. 
+
+.. figure:: _static/images/FSM_Person.png
+  :align: center
+  :width: 900px
+  :figclass: align-center
+
+  Agents have can have custom Schedules and they can be made to execute actions through addBehaviour function.
 
 
 Network
@@ -31,18 +54,26 @@ getContactProbability
 
 In this class, there exists a function called ``getContactProbability`` that allows the programmer to get the probability of an agent being in contact with other agents in the same node. This is a crucial step in determining if the infection will spread and to how many people will it spread, if the said agents was infected. Similarly, it will dictate the number of infected agents this agent has interacted with, and hence the probability of contracting the infection. 
 
-.. figure:: _static/images/frameworkbasics-diagram.png
+.. figure:: _static/images/FSM_network.png
   :align: center
   :width: 900px
   :figclass: align-center
 
-  Components of the simulations. (A) A sample Graph consisting of nodes such as Person, Offices and Houses which are connected by relations. (B) Different User defined nodes present (C) Illustration of a bidirectional relationship between two nodes (D) Agents have can have custom Schedules and they can be made to execute actions through addBehaviour function. (E) Different types of Persons can have their own schedule based on age, jobs, and socio-economic status. 
+  A sample Graph consisting of nodes such as Person, Offices and Houses which are connected by relations, and forming a Network.
 
 
 Schedules
 ---------
 
-``Schedules`` are defined when a time component is added into a ``Network`` and determines the location of the agents in the ``Network`` at any instance of time. Each agent has to be present in some location in the Network at any given moment, and this is governed by the ``Schedule`` of the agent. To take a simple example, a Student’s schedule will be can be 0 - 9 Home, 9 - 17 School, 17 - 24 Home. 
+``Schedules`` are defined when a time component is added into a ``Network`` and determines the location of the agents in the ``Network`` at any instance of time. Each agent has to be present in some location in the Network at any given moment, and this is governed by the ``Schedule`` of the agent. To take a simple example, a Student’s schedule will be can be 0 - 9 Home, 9 - 17 School, 17 - 24 Home. Similarly, custom schedules can be created for any number of different types of people present in the population.
+
+.. figure:: _static/images/FSM_customSch.png
+  :align: center
+  :width: 900px
+  :figclass: align-center
+
+  Different types of Persons can have their own schedule based on age, jobs, and socio-economic status. 
+
 
 Finite State Machine
 --------------------
