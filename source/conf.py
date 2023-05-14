@@ -34,7 +34,6 @@ extensions = [
     'sphinx_rtd_theme',
     'sphinx_copybutton',
     'sphinx_math_dollar',
-    'sphinx_togglebutton',
     'sphinx_design',
     'sphinx.ext.mathjax',
     'sphinx.ext.todo',
