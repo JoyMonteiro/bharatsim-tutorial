@@ -190,9 +190,9 @@ The ``csvDataExtractor`` function is defined in the following manner
 
 Once the function is defined and we need it to the following things, 
 
-1. `Accept the Context as an input parameter`
-2. `CSV header and corresponding values`
-3. `Return the data in the form of GraphData`
+1. Accept the Context as an input parameter
+2. CSV header and corresponding values
+3. Return the data in the form of GraphData
 
 The first step depends on the CSV file that is being imported since it depends on the headers of the data. In BharatSim, the CSV files usually have the following columns, 
 
@@ -210,7 +210,7 @@ The next step is to determine if the citizen imported is infected or not.
 
   val initialInfectionState = if (biasedCoinToss(initialInfectedFraction)) "Infected" else "Susceptible"
   
-If the ``biasedCoinToss`` returns true, then the citizen analyzed is infected from the disease. Using the data obtained from the CSV file and the infection state, we can create an instance of the citizen.
+If the ``biasedCoinToss`` returns ``True``, then the citizen analyzed is infected from the disease. Using the data obtained from the CSV file and the infection state, we can create an instance of the citizen.
 
 .. code-block:: scala
 

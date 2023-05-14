@@ -1,4 +1,4 @@
-Implementing FSM in SIR
+FSM in SIR
 ========================
 
 Futher information can be found :ref:`Finite State Machine`
@@ -8,7 +8,10 @@ In this case of Finite State Machine, the abstract machine will be the agents in
 
 Earlier we had introduced Disease Dynamics in the form of ``behaviours``, and these dictated whether an agent would be ``isInfected`` or ``isRecovered``. As discussed earlier, in the FSM ``Transition`` will dictate whether an agent is in ``InfectedState`` or ``RecoveredState``.  
 
-To instate Finite State Machine, the basic code for SIR is required with a few basic modifications. All the classes are added below, 
+To introduce a Finite State Machine, we need to make the following changes:
+
+1. Define disease states, and define transitions between them
+2. Modify our agents to now be extensions of the ``StatefulAgent`` class, instead of the ``Agent`` class like before.
 
 .. tabs::
 
@@ -429,7 +432,7 @@ This function is every similar to ``checkforInfection`` except for the conversio
     cache.getOrUpdate(tuple, () => fetchFromStore(decodedPlace)).asInstanceOf[Double]
   }
 
-Here we define a value called ``tuple`` that stores the place and the internalId of the place. This is fed in ``getOrUpdate``, which looks into the stored memory to see if any information about the place can be found. If there exist some prior information, then it gets the information. If there is no prior information, then it calculates the values and updates it so the next time it will not have to calculate. The symbol ``()`` means that there is no information is present, and the computer is asked to use the function ``fetchFromStore`` to find the infected number. This is the same code as the one in ``Person`` class.
+The above is a hashmap, which requires a ``tuple`` as a key which is unique for every location. The key which is a  ``tuple`` that stores the place and the internalId of the place. This is fed in ``getOrUpdate``, which looks into the stored memory to see if any information about the place can be found. If there exist some prior information, then it gets the information. If there is no prior information, then it calculates the values and updates it so the next time it will not have to calculate. The symbol ``()`` means that there is no information is present, and the computer is asked to use the function ``fetchFromStore`` to find the infected number. This is the same code as the one in ``Person`` class.
 
 .. code-block:: scala 
 
@@ -459,7 +462,7 @@ The function ``checkForRecovered`` is just a ``biasedCoinToss`` with the appropr
   }
 
 
-This is all for ``InfectedState``. Nothing needs to be added for ``RecoveredState`` since they cant participate in the dynamics or ``Transition`` out of the ``State``.
+This is all for ``InfectedState``. Nothing needs to be added for ``RecoveredState`` since they cant participate in the dynamics or ``Transition`` out of the ``State``. However, if we were to model a system with waning immunity to a disease - for example, an "SIRS" model where recovered individuals transition back to the Susceptible state -- we will need to include the dynamics of this in the ``RecoveredState``. 
 
 
 

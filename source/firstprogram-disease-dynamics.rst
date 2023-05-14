@@ -2,7 +2,7 @@
 Introduction of Disease Dynamics
 ================================
 
-In the previous section, we had a disease for the name sake but it must be noted that the disease was not allowed to spread or die out. In this section, we allow the disease to propogate through a population and we output the changes in the population, such the number of individuals that have been recovered or number of infected individuals that remain after end time. Since the manner in which the disease is interacting with the agent is changing, we will have to update the ``Person.scala`` class and add a new class to dictate the outputs. 
+In the previous section, while we defined all of the disease parameters, it had no effect on the population since we did not allow it to spread or die out. In this section, we allow the disease to propagate through a population and we output the changes in the population, such the number of individuals that have been recovered or number of infected individuals that remain after end time. Since the manner in which the disease interacts with an agent can now change as a function of location and time, we will have to update the ``Person`` class to account for this. Additionally, since we would like to record the different number of individuals in each compartment as the output for our simulation, we also need to define a new class that can record these details to an output file.
 
 The Required Classes
 ^^^^^^^^^^^^^^^^^^^^
@@ -10,13 +10,6 @@ The Required Classes
 A new class called ``SIROutputSpec`` needs to be created and the ``Person`` class needs to be updated. 
 
 .. tabs::
-
-  .. group-tab:: SIROutputSpec.scala 
-
-    This scala class specifies which headers of the data set is printed. 
-
-    * getHeaders lists the headers of the outputs.
-    * getRows function fetches the count of number of ``Susceptible``, ``Infected``, and ``Recovered`` at each time step. The counting is done by looking at each individual and retrieving their infection status and adding it up. 
 
   .. group-tab:: Person.scala
 
@@ -28,40 +21,17 @@ A new class called ``SIROutputSpec`` needs to be created and the ``Person`` clas
     * checkForRecovery looks at infected individuals and if the last day for infection has been reached, then the ``InfectionStatus`` changes from ``Infected`` to ``Recovered``. 
     * isSusceptible, isInfected, isRecovered changes the infection status to ``Susceptible``, ``Infected``, ``Recovered`` respectively. 
     * decodeNode take the string and return the corresponding node.
-    * We then add behaviour for each of the states. 
+    * We then add behaviour for each of the states.   
+
+  .. group-tab:: SIROutputSpec.scala 
+
+    This scala class specifies which headers of the data set is printed. 
+
+    * getHeaders lists the headers of the outputs.
+    * getRows function fetches the count of number of ``Susceptible``, ``Infected``, and ``Recovered`` at each time step. The counting is done by looking at each individual and retrieving their infection status and adding it up. 
+
 
 .. tabs::
-
-  .. code-tab:: scala SIROutputSpec.scala 
-
-    package sir
-
-    import com.bharatsim.engine.Context
-    import com.bharatsim.engine.graph.patternMatcher.MatchCondition._
-    import com.bharatsim.engine.listeners.CSVSpecs
-    import com.bharatsim.examples.epidemiology.sir.InfectionStatus.{Susceptible, Infected, Removed}
-
-    class SIROutputSpec(context: Context) extends CSVSpecs {
-      override def getHeaders: List[String] =
-        List(
-          "Step",
-          "Susceptible",
-          "Infected",
-          "Removed"
-        )
-
-      override def getRows(): List[List[Any]] = {
-        val graphProvider = context.graphProvider
-        val label = "Person"
-        val row = List(
-          context.getCurrentStep,
-          graphProvider.fetchCount(label, "infectionState" equ Susceptible),
-          graphProvider.fetchCount(label, "infectionState" equ Infected),
-          graphProvider.fetchCount(label, "infectionState" equ Removed)
-        )
-        List(row)
-      }
-    }
 
   .. code-tab:: scala Person.scala 
 
@@ -134,6 +104,38 @@ A new class called ``SIROutputSpec`` needs to be created and the ``Person`` clas
 
       addRelation[House]("STAYS_AT")
     }
+
+ 
+  .. code-tab:: scala SIROutputSpec.scala 
+
+    package sir
+
+    import com.bharatsim.engine.Context
+    import com.bharatsim.engine.graph.patternMatcher.MatchCondition._
+    import com.bharatsim.engine.listeners.CSVSpecs
+    import com.bharatsim.examples.epidemiology.sir.InfectionStatus.{Susceptible, Infected, Removed}
+
+    class SIROutputSpec(context: Context) extends CSVSpecs {
+      override def getHeaders: List[String] =
+        List(
+          "Step",
+          "Susceptible",
+          "Infected",
+          "Removed"
+        )
+
+      override def getRows(): List[List[Any]] = {
+        val graphProvider = context.graphProvider
+        val label = "Person"
+        val row = List(
+          context.getCurrentStep,
+          graphProvider.fetchCount(label, "infectionState" equ Susceptible),
+          graphProvider.fetchCount(label, "infectionState" equ Infected),
+          graphProvider.fetchCount(label, "infectionState" equ Removed)
+        )
+        List(row)
+      }
+    }   
 
 Outputting a File
 ^^^^^^^^^^^^^^^^^

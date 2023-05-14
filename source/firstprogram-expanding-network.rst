@@ -2,7 +2,7 @@
 Expanding the Network
 =====================
 
-Ealier we had one location which was the ``House``. In this section we increase the locations to ``House``,  ``Office``, and ``School``. Every person has a unique house and either a Office or a School and this categorized on the basis of age. 
+Ealier we had one location class which was the ``House``. In this section we increase the location classes to ``House``,  ``Office``, and ``School``. Every person has a unique house and either an office or a school and this categorized on the basis of age. 
 
 The Required Classes
 ^^^^^^^^^^^^^^^^^^^^

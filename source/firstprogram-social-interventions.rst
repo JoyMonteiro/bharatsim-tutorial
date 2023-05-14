@@ -1,7 +1,7 @@
 Introduction of Social Interventions
 ====================================
 
-Various social interventions can be made such as quarantine as explained in the previous section, or vaccine drives. 
+BharatSim allows the user the possibility to implement a variety of social interventions that modify disease spread at the level of individuals, like quarantines, lockdowns, or vaccination drives. In this section, we will describe a simple implementation of a quarantine.
 
 Quarantine
 ^^^^^^^^^^
