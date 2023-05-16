@@ -137,8 +137,10 @@ A new class called ``SIROutputSpec`` needs to be created and the ``Person`` clas
       }
     }   
 
-Outputting a File
-^^^^^^^^^^^^^^^^^
+.. _Writing output to file:
+
+Writing output to a file
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now we have imported a population and set up basics for the disease. It is time we implement the disease and print the output. First we need to import the following addition files, 
 

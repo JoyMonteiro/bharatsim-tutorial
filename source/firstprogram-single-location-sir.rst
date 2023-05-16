@@ -33,8 +33,8 @@ The ``args`` means that the argument or the input is an array of Strings and the
 On running this, the output message should read ``Process finished with exit code 0``
 
 
-The Required Classes
-^^^^^^^^^^^^^^^^^^^^
+Implementing a single-location SIR
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Before we can input a file or simulate a disease, we need to make a few classes which are essential to the workings of the framework. These classes need to be imported to the main class to make the code easier to understand and clutter-free. The framework is extremely inter-connected and defining the same functions over and over again is tedious and computationally heavy. 
 

@@ -54,7 +54,7 @@ Outputting data to a csv
 The target to be optimized
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the :ref:`Saving your output` section (in :ref:`Writing your First Program`), we use a user-defined class called ``SIROutputSpec``. In the ``getRows`` method of the class, we obtain the number of people in each compartment with the following lines of code:
+In the :ref:`section on writing output to a file <Writing output to file>` (in :ref:`Writing your First Program`), we use a user-defined class called ``SIROutputSpec``. In the ``getRows`` method of the class, we obtain the number of people in each compartment with the following lines of code:
 
 .. code-block:: scala
 

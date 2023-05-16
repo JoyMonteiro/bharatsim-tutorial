@@ -4,8 +4,8 @@ Expanding the Network
 
 Ealier we had one location class which was the ``House``. In this section we increase the location classes to ``House``,  ``Office``, and ``School``. Every person has a unique house and either an office or a school and this categorized on the basis of age. 
 
-The Required Classes
-^^^^^^^^^^^^^^^^^^^^
+Implementing multiple houses, offices, and schools
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As mention while creating the ``House.scala`` class, we mentioned that each of the locations will require a separate class. In addition to the new location classes, the person class needs to updated to establish the relationships. 
 
@@ -122,8 +122,6 @@ As mention while creating the ``House.scala`` class, we mentioned that each of t
       addRelation[School]("STUDIES_AT")
     }
 
-Implementation
-^^^^^^^^^^^^^^
 
 The main file doesnt need major alterations, but the changes that have to be implemented are crucial conceptually and for the program to give the correct output. The majority of the changes are in two areas which are
 
