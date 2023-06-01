@@ -3,6 +3,7 @@ _site/
 
 # Build files
 build/
+_build/
 
 # VSCode
 .vscode

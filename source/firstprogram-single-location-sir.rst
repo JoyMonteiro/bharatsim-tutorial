@@ -53,7 +53,7 @@ Before we can input a file or simulate a disease, we need to make a few classes 
 
     Much like ``InfectionStatus``, this is also a scala object class and this stores the characteristics of the disease; the beta value and the when the infection will end. 
 
-    * Final val: this value can not be over-written in any other class or function. 
+    * ``final val``: this value can not be over-written in any other class or function.
 
     A disease is defined by beta and how long it lasts (for further information, refer to `Epidemiology  <https://bharatsim.readthedocs.io/en/latest/epidemiology.html>`_), and final val makes sure that the defining characteristics of the disease does not change during the course of the simulation. 
 
@@ -61,8 +61,8 @@ Before we can input a file or simulate a disease, we need to make a few classes 
 
     This is scala case class that is a stores the locations of the individuals which are the part of the network. Since there is only one location, then only one class is required to define the location.
 
-    * addRelation: connects the individuals to the location or in this case the ``House``. On further expanding the locations, we will keep addings relationships in different classes. 
-    * Person: It is a class defining the agent (or individual) in this simulation. 
+    * ``addRelation``: connects the individuals to the location or in this case the ``House``. On further expanding the locations, we will keep addings relationships in different classes.
+    * ``Person``: is a class defining the agent (or individual) in this simulation.
 
   .. group-tab:: Person.scala
 

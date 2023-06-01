@@ -6,15 +6,14 @@ The SIR Model
     :alt: The disease progression in the SIR Model
     :figclass: align-center
 
-    The SIR model stands for (S)usceptible, (I)nfected, and (R)ecovered. Individuals in this model can be in one of these three compartments at any given time. Infected individuals can “infect” the Susceptible, causing them to transition to the Infected compartment, from which they can eventually recover. In what follows we will use the letters S, I, and R to represent both the individual compartments as well as the numbers in each of these compartments. The context should make it clear what we are referring to. In addition, we make some assumptions:
+    The individuals in the SIR model can be in one of the three compartments at any given time, (S)usceptible, (I)nfected, or (R)ecovered. Infected individuals can “infect” the Susceptible, causing them to transition to the Infected compartment, from which they will eventually recover. In what follows we will use the letters S, I, and R to represent both the individual compartments as well as the numbers in each of these compartments. The context should make it clear what we are referring to. In addition, we make some assumptions:
 
 
 1.  Susceptible individuals can only leave this compartment if they have
-    been infected. (We ignore birth and death rates.)
+    been infected, and the total number of individuals in the population is conserved. In other words, we ignore the effects of birth and death rates.
 2.  The rate of change of $S(t)$, the number of susceptibles, depends
     on the number of individuals currently susceptible, the number
-    currently infected, and the amount of contact between susceptibles
-    and infected.
+    currently infected, and a parameter that governs the amount of contact between susceptibles and infected.
 3.  We also assume that some fixed fraction (say, $\gamma$) of the
     infected group will recover on any given day. Keep in mind that when
     we say someone has "Recovered", what we mean (in this model) is that
@@ -47,6 +46,7 @@ $$
 By inspecting the equations, you can see that the parameters $\beta$ and $\gamma$ differ in nature. $\gamma$ is just the fraction of infected individuals recovering per day. $\beta$, on the other hand, is a way of quantifying assumption no. 2 from earlier. We want to express that the probability of infection depends on the contact between the infected and the susceptible. This amount of contact is determined by multiplying S and I. We call $\beta$ the transmission coefficient.
 
 $$\text{Transmission coefficient}\beta = \text{Contact probability } \times \text{ Transmission rate},$$
+
 Each infected individual meets a fraction of the total number of susceptibles and infects them at some “transmission rate”. The “contact probability” decides how the transmission scales with the population. Two specific types of scaling can be chosen, depending on the type of disease.
 
 
@@ -82,15 +82,15 @@ Equation (\ref{1}) above can be rewritten as: $$\begin{equation}
         I(t)/N$, and $r(t) = R(t)/N$.)
     2.  It turns out that finding the exact solution to this equation as a
         function of time is not possible. However, an implicit solution can be found. By dividing the first and third equations, show that $$s(t) =
-        s(0)\,e^{-R_0 r(t)},$$ where the quantity $R_0$ is called
-        the **reproductive ratio**. Show that $R_0$ is independent of
-        $N$.
+        s(0)\,e^{-R_0 r(t)},$$
+
+        where the quantity $R_0$ is called the **reproductive ratio**. Show that $R_0$ is independent of $N$.
     3.  Now, repeat the previous question for the system denoted by Equation
         (\ref{1}). Show that in that case, $R_0$ depends on the total
         population $N$.
 
 The above differential equations represented in Equation (\\ref{2}) can
-be easily solved numerically to obtain solutions that look like this:
+be easily solved numerically to obtain the curves for $S$, $I$, and $R$ shown in the figure below.
 
 .. figure:: _static/images/epidemiology_SIR_deterministic.png
     :align: center

@@ -1,7 +1,7 @@
-Residence times in different compartments
+Sojourn times in different compartments
 =========================================
 
-How long does an individual spend in an infected state or compartment? This duration, also known as residence time, isn’t a fixed value, so it’s important to know the distribution of residence times. In Markov-Chain-Monte-Carlo simulations like ours, the residence times are exponentially distributed. First we will explain why the distribution is exponential, which can allow us to change our algorithm for non-exponential cases.
+How long does an individual spend in an infected state or compartment? This duration, also known as the _sojourn_ time, isn’t a fixed value, so it’s important to know the distribution of these sojourn times. In Markov-Chain-Monte-Carlo simulations like ours, the sojourn times are exponentially distributed. First we will explain why the distribution is exponential, which can allow us to change our algorithm for non-exponential cases.
 
 We discretise time into small intervals or time-steps of $\Delta t$, so that the total time $T = N \Delta t$, where $N$ is the total number of time-steps. In every small step $\Delta t$ an individual in our disease model has a small probability, $p$, of exiting the compartment. The value of $p$ depends on factors such as the number of individuals in that compartment at that time, and so on.
 
@@ -9,9 +9,9 @@ To simulate $p$, we draw a random number $r$ from a uniform distribution. If $r 
 
 This is the only role of the uniform distribution here.
 
-Now, *what is the probability that an individual will leave a compartment at some time $t$?* In our scheme, this is equivalent to asking, what is the probability of the event occurring between $t$ and $t + \Delta t$. We will call this probability $P(t)\Delta t$. We’ve also discretized time into units of $\Delta t$, so we can define $t = n\Delta t$, where $n$ is the number of steps of $\Delta t$.
+Now, we ask ourself the following question: *what is the probability that an individual will leave a compartment at some time $t$?* In our scheme, this is equivalent to asking what the probability is of the event occurring between time $t$ and $t + \Delta t$. We will call this probability $P(t)\Delta t$. We’ve also discretized time into units of $\Delta t$, so we can define $t = n\Delta t$, where $n$ is the number of steps of $\Delta t$.
 
-This allows us to reframe the problem as, *what is the probability that the individual will leave the compartment after exactly $n$ steps?* This is given by:
+This allows us to reframe the problem as this: *what is the probability that the individual will leave the compartment after exactly $n$ steps?* This is given by:
 
 $$\text{Prob. that event occurs exactly after $n$ steps} = (1-p)^n p.$$
 
@@ -23,7 +23,7 @@ $$
 \end{align}
 $$
 
-To find the true probability density, we need to take the limit $N\to\infty$, i.e. $N/T \to \infty$, and so :
+To find the true probability density, we need to take the limit $N\to\infty$, i.e. $N/T \to \infty$, and so
 
 $$\mathcal{P}(t)\dd t = \lim_{N/T \to\infty} \left(1 - \frac{\lambda T}{N} \right)^{t N/T} \lambda \Delta t = \lambda e^{-\lambda t} \dd t, $$
 
@@ -45,10 +45,10 @@ so that the probability distribution is: $$\mathcal{P}(t) = \lambda e^{-\lambda 
     3.  Next, take the limit \$N\_\\text{steps}\\to\\infty\$, and \$\\Delta
         t\\to 0\$, keeping \$N\_\\text{steps}\\,\\Delta t = T\$, and argue
         that \$\$\\mathcal{P}(t) = \\lambda\_I \\, e\^{-\\lambda\_I t}.\$\$
-        The residence times in the infected compartment are exponentially
+        The sojourn times in the infected compartment are exponentially
         distributed, with mean \$\\tau\_I = 1/\\lambda\_I\$! In other words,
         this is a succession of Poisson processes -- characteristic of
         Markov Chain Monte Carlo processes: happens every time the
         probability of a transition is independent of the history.
-    4.  Can the same argument be used to say that the residence time in the
+    4.  Can the same argument be used to say that the sojourn time in the
         susceptible compartment is \$\\tau\_S = 1/\\lambda\_S\$? Explain.
