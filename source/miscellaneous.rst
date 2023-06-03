@@ -1,45 +1,35 @@
 Miscellaneous
 =============
 
-Assembling an Executable Jar file
----------------------------------
+Assembling an Executable ``.jar`` file
+--------------------------------------
 
 A ``jar`` file is an executable java file that can be used to run your code. Instead of importing and building the whole project, it is more efficient to convert the source code into a ``jar`` and import it as a library. This way the environment will be clutter free and all the classes and functions can be easily imported.
 
-1.  Open the Project in IntelliJ and go to the sbt shell, and type ``assembly``
+In order to assemble the code into an executable jar that can be used as a library, open the project in IntelliJ and go to the sbt shell, and type ``assembly``.
 
-    .. figure:: _static/images/jar-doc-1.png
-        :align: center
-  
-2. On executing ``assembly``, the sbt shell will display that the following tests were unsuccessful
+.. figure:: _static/images/jar-doc-1.png
+    :align: center
 
-  a. Neo4jProviderTest
-  b. BatchNeo4jProviderTest
-  c. ReadOperationsStreamTest
-  d. WriteOperationsStreamTest
 
-3. The only to bypass the above errors is to navigate to these files and completely comment them out. These can be done by selecting all the line and doing ``ctrl + /`` . 
+Alternatively, you could also navigate to the root folder of your project in a standard UNIX terminal and type ``sbt assembly``. Once this command has successfully run, a new ``jar`` file will appear in the ``target/scala-2.##/`` within the root folder of your project.
 
-.. note:: The path specified in the console is only partially correct. The actuall path of these files are ``BharatSim\src\test\scala\com\bharatsim\engine\graph\neo4j`` and not just ``com\bharatsim\engine\graph\neo4j``. The shell is in the ``test\scala`` directory and specifies the path from there.
+Importing a ``.jar`` file as a Library
+--------------------------------------
 
-4. On opening the root folder, you can find the ``bharatsim-library.jar`` file. 
+As mentioned in the above section, importing the whole source code as a jar file is highly efficient and recommended, especially for a novice coder. In the root folder of the project, create a new folder called ``lib`` unless one already exists. Copy the jar file and paste it into the ``lib`` folder.
 
-Importing a Jar file as a Library
----------------------------------
+1. Go to file option in IntelliJ and click on the option "Project structure".
 
-As mentioned in the above section, importing the whole source code as a jar file is highly efficient and recommended, especially for a novice coder. In the root folder of the project, create a new folder called ``lib`` unless one already exists. Copy the jar file and paste it into the ``lib`` folder. 
+2. Select "modules" on the left side panel, and select the "dependencies" option. A list of files should appear.
 
-1. Go to file option in IntelliJ and click on the option "Project structure". 
+3. There should be a "+" option and select the Library followed by Java.
 
-2. Select "modules" on the left side panel, and select the "dependencies" option. A list of files should appear. 
+4. Select the required jar file in the lib folder. Click on ``Apply`` and then ``ok`` button to import the jar file.
 
-3. There should be a "+" option and select the Library followed by Java. 
+.. error:: If the package or a class from the library is not available, then make sure the jar file has been imported successfully. Once common source of error is not clicking on the ``Apply`` button before selecting ``ok`` as mentioned in Step 4.
 
-4. Select the required jar file in the lib folder. Click on ``Apply`` and then ``ok`` button to import the jar file. 
-
-.. error:: If the package or a class from the library is not available, then make sure the jar file has been imported successfully. Once common source of error is not clikcing on the ``Apply`` button before selecting ``ok`` as mentioned in Step 4. 
-
-Importing packages and classes can be done as before using the same syntax. 
+Importing packages and classes can be done as before using the same syntax.
 
 Using args in main method
 -------------------------
@@ -250,4 +240,3 @@ The output should be of the form
    :file: _static/csvs/people_per_home_truncated.csv
    :widths: 5, 5, 5, 5, 5, 5
    :header-rows: 1
-

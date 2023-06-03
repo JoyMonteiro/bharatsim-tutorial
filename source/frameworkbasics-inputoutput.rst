@@ -30,7 +30,7 @@ The next step is to create an instance of the simulation class in the main funct
 .. code-block:: scala
 
   val simulation = Simulation()
- 
+
 We then ingest the data in the following way:
 
 .. code-block:: scala
@@ -122,7 +122,7 @@ Finally, we need our function to return the ``graphData`` object we've made:
 
     graphData
 
-.. hint:: In scala, the last line of a function is treated as a return, and so this is valid syntax.
+.. hint:: In `Scala`, the last line of a function is treated as a return, and so this is valid syntax.
 
 Putting it all together, our user-defined ``myCsvDataExtractor`` function is
 
@@ -251,7 +251,7 @@ If we'd like to investigate the dynamics of the simulation as it evolves with ti
 First, we must import ``CsvOutputGenerator`` and ``SimulationListenerRegistry``
 
 .. code-block:: scala
-   
+
   import com.bharatsim.engine.listeners.{CsvOutputGenerator, SimulationListenerRegistry}
 
 
@@ -283,7 +283,7 @@ and so on, until the tick at which the simulation ends.
     SimulationListenerRegistry.register(
         new CsvOutputGenerator("src/main/resources/output_" + currentTime + ".csv", new SIROutputSpec(context))
       )
-      
+
   Note that ``Date().getTime`` returns the time as a `UNIX timestamp <https://en.wikipedia.org/wiki/Unix_time>`_, and so your output will contain a long integer after the underscore.
 
 For a more detailed example of how to output data to a CSV file, please refer to the `Writing your first program <#>`_ section.

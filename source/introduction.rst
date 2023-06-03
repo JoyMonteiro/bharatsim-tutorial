@@ -5,7 +5,7 @@ Simulating hypothetical scenarios is a very useful way to analyse and predict th
 
 For this reason the results from models developed for other countries may not be able to achieve the desirable level of predictive ability. Such models might not account for factors pertinent to India -- its unique demographics, the state (or absence) of health care, stratified social structures, and complex ecological gradients. The inputs for such factors must be collated from multiple sources, including imperfect and poorly usable government data, which requires both local knowledge and considerable experience in data analysis and interpretation. The result is a pressing need for an epidemic modelling framework tailored to Indian needs, with potential applications beyond its immediate use for COVID-19 modelling.
 
-Given these design requirements, building and implementing detailed agent-based models is an unsurprisingly daunting task. A useful model should ideally predict impending potential surges in health care requirements, enabling for timely resource allocation. It should also allow us to compare the merits and consequences of different non-pharmaceutical interventions at different stages of the epidemic. As a specific example, a useful model might help us untangle how asymptomatic infections play a role in the spread of the disease.
+Given these design requirements, building and implementing detailed agent-based models is an unsurprisingly daunting task. A useful model should ideally predict impending potential surges in health care requirements, enabling for timely resource allocation. It should also allow the modeler to compare the merits and consequences of different non-pharmaceutical interventions at different stages of the epidemic. As a specific example, a useful model might help the modeler untangle how asymptomatic infections play a role in the spread of the disease.
 
 BharatSim has been designed keeping the aforementioned design requirements and challenges of the Indian context in mind. BharatSim's vision is to build an India scale agent-based framework that would enable modellers from different disciplines -- ranging from epidemiology, disaster management, and economics -- to advise policy makers and decision makers across institutions. No other framework in India is as generalizable or scalable in this context.
 
@@ -13,9 +13,9 @@ BharatSim has been designed keeping the aforementioned design requirements and c
 
 BharatSim has been developed with 3 goals in mind:
 
-1. **Flexibility:** Since it is a social simulation framework, a researcher can develop models for a variety of disciplines like epidemiology, economics, climate science, and so on,
+1. **Flexibility:** Since it is a social simulation framework, a researcher can develop models for a variety of disciplines including epidemiology, economics, climate science.
 
-2. **Scalability:** It can keep track of to millions of agents in an efficient manner,
+2. **Scalability:** It can keep track of millions of agents in an efficient manner.
 
 3. **Customisation:** It has been developed to suit India's needs, via its support for synthetic population.
 
