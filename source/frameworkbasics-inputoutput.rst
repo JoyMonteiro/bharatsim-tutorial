@@ -1,16 +1,16 @@
 Inputs and Outputs in BharatSim
 -------------------------------
 
-Inputs
-~~~~~~
+Reading inputs from a synthetic population
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-BharatSim uses a `CSV <https://en.wikipedia.org/wiki/Comma-separated_values>`_ file as an input. It is equipped to **ingest** data from a file, by reading it and converting the data to the network.
+BharatSim uses a `CSV <https://en.wikipedia.org/wiki/Comma-separated_values>`_ file as an input. It is equipped to **ingest** data from a file, by reading it and converting the data into the `Graph` used by the framework.
 
 In order to ingest data, we need to make use of three functions:
 
-* ``ingestData``, which is a method of the ``simulation`` class
-* ``ingestCSVData``, a method of the ``ContextBuilder`` object
-* A user-defined function which tells the program what data to extract and what to do with it
+* ``ingestData``: which is a method of the ``Simulation`` class
+* ``ingestCSVData``: a method of the ``ContextBuilder`` object
+* A user-defined "mapper" function which tells the program what data to extract and what to do with it
 
 Using the framework-defined functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -40,12 +40,12 @@ We then ingest the data in the following way:
     logger.debug("Ingestion done")
   })
 
-where ``myCsvDataExtractor`` is the user-defined function.
+where ``myCsvDataExtractor`` is the user-defined "mapper" function.
 
 .. note:: The above block of code essentially causes the data from the CSV file to be read one line at a time
 
-Using the User-Defined function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Creating the user-defined mapping function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The user-defined function (``myCsvDataExtractor``, in our case) will depend on the data we want to extract. As an example, let's consider that we have data on a number of cats, each with their own ID, name, city of residence, an integer ID for the city, and a particular colour. Our CSV file would look like
 
@@ -160,8 +160,8 @@ Putting it all together, our user-defined ``myCsvDataExtractor`` function is
 
 .. note:: You may have noticed that in the CSV file, two cats (namely, Coppe and Marie) both live in the same city (Crossbell). That does not, however, lead to two nodes being created for the same city. A node is defined by it's unique key and it's instance. In this example, the unique key is the city ID (which is the same for both cats - ``100``) and the instance is the corresponding object ``singleCity``, which is again identical for both the cats (the attributes are ``100`` and ``"Crossbell"``, respectively). As such, the same node is used, and the city doesn't duplicate in the graph.
 
-Outputs
-~~~~~~~
+Writing outputs to a CSV file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A convenient way to store the output is by using a CSV file. Scala is `capable of writing to files <https://alvinalexander.com/scala/how-to-write-text-files-in-scala-printwriter-filewriter/>`_, but BharatSim simplifies the process when it comes to CSV outputs.
 

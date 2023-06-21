@@ -6,19 +6,14 @@ The SIR Model
     :alt: The disease progression in the SIR Model
     :figclass: align-center
 
-    The individuals in the SIR model can be in one of the three compartments at any given time, (S)usceptible, (I)nfected, or (R)ecovered. Infected individuals can “infect” the Susceptible, causing them to transition to the Infected compartment, from which they will eventually recover. In what follows we will use the letters S, I, and R to represent both the individual compartments as well as the numbers in each of these compartments. The context should make it clear what we are referring to. In addition, we make some assumptions:
+    Compartments of the SIR model
+
+The individuals in the SIR model can be in one of the three compartments at any given time, (S)usceptible, (I)nfected, or (R)ecovered. Infected individuals can “infect” the Susceptible, causing them to transition to the Infected compartment, from which they will eventually recover. In what follows we will use the letters S, I, and R to represent both the individual compartments as well as the numbers in each of these compartments. The context should make it clear what we are referring to. In addition, we make some assumptions:
 
 
-1.  Susceptible individuals can only leave this compartment if they have
-    been infected, and the total number of individuals in the population is conserved. In other words, we ignore the effects of birth and death rates.
-2.  The rate of change of $S(t)$, the number of susceptibles, depends
-    on the number of individuals currently susceptible, the number
-    currently infected, and a parameter that governs the amount of contact between susceptibles and infected.
-3.  We also assume that some fixed fraction (say, $\gamma$) of the
-    infected group will recover on any given day. Keep in mind that when
-    we say someone has "Recovered", what we mean (in this model) is that
-    they are no longer infectious or susceptible to the disease and
-    therefore cannot contribute to its spread.
+1.  Susceptible individuals can only leave this compartment if they have been infected, and the total number of individuals in the population is conserved. In other words, we ignore the effects of birth and death rates.
+2.  The rate of change of $S(t)$, the number of susceptibles, depends on the number of individuals currently susceptible, the number currently infected, and a parameter that governs the amount of contact between susceptibles and infected.
+3.  We also assume that some fixed fraction (say, $\gamma$) of the infected group will recover on any given day. Keep in mind that when we say someone has "Recovered", what we mean (in this model) is that they are no longer infectious or susceptible to the disease and therefore cannot contribute to its spread.
 
 Mean-field or "Well-mixed" solution to this model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,12 +31,8 @@ $$
    :class: error
 
     1.  Why is there a negative sign in the equation for $S(t)$?
-    2.  Convince yourself that $\beta$ represents the average number of
-        contacts per unit time between an infected individual and a
-        susceptible individual.
-    3.  Show that the total population $N = S+I+R$ is fixed (i.e. that
-        this is a **closed system**). This is often a very good check to see
-        if your simulation is running correctly!
+    2.  Convince yourself that $\beta$ represents the average number of contacts per unit time between an infected individual and a susceptible individual.
+    3.  Show that the total population $N = S+I+R$ is fixed (i.e. that this is a **closed system**). This is often a very good check to see if your simulation is running correctly!
 
 By inspecting the equations, you can see that the parameters $\beta$ and $\gamma$ differ in nature. $\gamma$ is just the fraction of infected individuals recovering per day. $\beta$, on the other hand, is a way of quantifying assumption no. 2 from earlier. We want to express that the probability of infection depends on the contact between the infected and the susceptible. This amount of contact is determined by multiplying S and I. We call $\beta$ the transmission coefficient.
 
@@ -50,24 +41,11 @@ $$\text{Transmission coefficient}\beta = \text{Contact probability } \times \tex
 Each infected individual meets a fraction of the total number of susceptibles and infects them at some “transmission rate”. The “contact probability” decides how the transmission scales with the population. Two specific types of scaling can be chosen, depending on the type of disease.
 
 
-1.  **Contact probability = 1.** In this case, we assume that infected
-    individuals meet all the susceptibles in one day. Therefore, the
-    larger the population, the faster the spread of disease. This can be
-    used to model a large number of people crowded in an enclosed space.
-    Such a scaling is often appropriate in the case of plant and animal
-    diseases. This is known as *density dependent scaling*.
+1.  **Contact probability = 1.** In this case, we assume that infected individuals meet all the susceptibles in one day. Therefore, the larger the population, the faster the spread of disease. This can be used to model a large number of people crowded in an enclosed space. Such a scaling is often appropriate in the case of plant and animal diseases. This is known as *density dependent scaling*.
 
-2.  **Contact probability = $\\mathbf{1/N}$.** In this case, we assume
-    the infected individual meets a constant number of people (say
-    $\lambda_S$) every day. Of these, the fraction of susceptibles
-    is $S/N$. This assumption holds for most human diseases, where
-    contact is determined by social factors. This is known as *frequency dependent scaling*.
+2.  **Contact probability = $\mathbf{1/N}$.** In this case, we assume the infected individual meets a constant number of people (say $\lambda_S$) every day. Of these, the fraction of susceptibles is $S/N$. This assumption holds for most human diseases, where contact is determined by social factors. This is known as *frequency dependent scaling*.
 
-The distinction between these two types of scaling only occurs when the
-total population size is not fixed, since otherwise the factor of $N$
-could simply be absorbed into the definition of $\beta$. In what
-follows, we will be using **frequency dependent scaling**. As a result,
-Equation (\ref{1}) above can be rewritten as: $$\begin{equation}
+The distinction between these two types of scaling only occurs when the total population size is not fixed, since otherwise the factor of $N$ could simply be absorbed into the definition of $\beta$. In what follows, we will be using **frequency dependent scaling**. As a result, Equation (\ref{1}) above can be rewritten as: $$\begin{equation}
 \begin{aligned} \dv{S}{t} &= - \frac{\lambda_S}{N} S I\\[10pt]
 \dv{I}{t} &= + \frac{\lambda_S}{N} S I - \lambda_I I\\[10pt]
 \dv{R}{t} &= + \lambda_I I \end{aligned} \tag{2} \label{2}

@@ -2,24 +2,36 @@ Optimisation
 ===============
 
 
-PerTickCache
-----------------
-PerTickCache is a Map-based temporary data store, which is used as a cache. It is a time and resource consuming process to access 
-the data store for each agent, most of which may even be redundant. We can use the PerTickCache for accessing such data. 
-If the value is already computed, we can acces it from there or compute the result and then store it as cache. 
-The PerTickCache is auto cleaned at the beginning of the tick. Example: In epidemiology, if we are trying to compute whom all 
-might get infected based on their area(Home, office, etc.), the total number of infected in the area remains constant for a 
-particular tick, and the same can be used for all susceptible agents.
+Per-tick cache
+--------------
 
-The user has to determine a unique key such as placeType to avoid overriding the results. A new value will be computed only
-if the value of that key is not present.
-Consider a case where a particular placeType, say office_1, has 1000 agents in a particular tick. So if we have to find the infected
-fraction for each agent, we have to query the data store for all the 1000 agents. But if we are using PerTickCache, we need to 
-access the data store only once. This significantly speeds up our simulation.
+BharatSim includes a framework-defined map-based temporary data store, which is used as a `cache <https://en.wikipedia.org/wiki/Cache_(computing)>`_. Accessing the data store for each individual agent is a time- and resource-intensive process. This is undesirable, especially if the data that is being accessed from the store has already been accessed before. In such cases, accessing the store more than once is redundant. The per-tick cache is designed to speed up this process. If the value is already computed, it can be stored in the per-tick cache, from where it can be accessed by future calls. This storage is *temporary*, since the per-tick cache is automatically cleaned at the beginning of each tick. This allows the cache to remain manageably small, and quick to access.
 
-Example for PerTickCache implementation:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Here we define the function which computes the value to be stored as cache.
+Example: storing location-level information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In general, the per-tick cache is most useful when the same data needs to be retrieved for multiple agents. Here, we describe one particular implementation in the context of a standard epidemiological simulation.
+
+In an agent-based model of disease transmission, we need to compute the number of susceptible individuals at every time-step that get infected. This number, as we have described in detail in :ref:`A Basic Introduction to Epidemic Modelling`, is decided by the number of infected individuals they are in contact with. This number is related to the *probability* that each susceptible agent has of getting infected. As a result, one might naively expect that this quantity has to be computed for every susceptible individual. This can be a costly process, since it requires accessing the underlying *Graph* database.
+
+However, at every time-step, the number of infected individuals in a location is assumed to not change. As a result, for a given location, once the number of infected in that location is computed, it does not need to be computed again. This can be implemented using the per-tick cache. A modeller can store the number of infected computed in each location in the cache, so that all future calls will simply access the cache, and not search through the entire population.
+
+In order to implement this sucessfully, the modeller will need to specify a unique key under which to store the data in a `HashMap <https://en.wikipedia.org/wiki/Hash_table>`_. The data will be computed if and only if that key is not present. In the example below, we will define the unique key to be the type of location ("Home", "Work", or "School"), followed by its id.
+
+To make this more concrete, let us take a specific example: consider a case where a specific ``Office`` (with ``id = 12``) has 1000 agents, of which 10 are infected and the remaining susceptible. If we needed to compute the number of infected separately for each agent, we would have to query the graph for all 990 susceptible agents. However, using the per-tick cache, the value of "10" could be stored under the key ``Office1000``, which would only have to be calculated once, and would then simply be accessed 989 times from the per-tick cache. As a result, 989 fewer calls will be made to the graph database, which could significantly speed up the simulation.
+
+Below, we describe how to implement this in the context of the SIR model we've described so far. Note that in our example, it is not the *number* of infected but the *fraction* of infected that is important. We will thus be storing this fraction to the cache. However, the idea remains the same.
+
+.. note::
+  BharatSim's per-tick cache implementation is present in the ``perTickCache`` function of the framework's ``Context``.
+..
+  TODO: Describe the Context explicitly in Framework Basics.
+
+
+Our implementation requires us to define two functions:
+
+* ``computeTheValue`` which explicitly goes through the graph and computes the fraction of infected in a specific location ``Node`` and returns this number.
+* ``fetchInfectedFraction`` which accepts the location ``Node`` and the ``placeType`` and creates the unique key and checks the framework-defined ``perTickCache`` to see if the value has already been computed. If it has, it returns the value from the cache. If it hasn't, it calls ``computeTheValue`` and stores the value in the cache.
 
 .. code-block:: Scala
 
@@ -32,23 +44,14 @@ Here we define the function which computes the value to be stored as cache.
     infected.toDouble/total.toDouble
     }
 
-The below function computes the infected fraction at a place, i.e. the number of infected people divided by the total number of people
-in that particular place. 
-
-.. code-block:: Scala
-
     private  def fetchInfectedFraction(node: Node, placeType: String, context: Context): Double = {
     val cache = context.perTickCache
     val uniqueKey = (placeType, node.internalId)
     cache.getOrUpdate(uniqueKey, () => computeTheValue(node)).asInstanceOf[Double]
     }
 
-The unique key used here is place type. Since in a particular tick, all agents in the same place will
-have the same infected fraction, we do not have to compute this for every agent; instead, we use the value from the cache. This improves the
-computation speed and minimises resource usage.
 
-
-Outputting data to a csv
+Outputting data to a CSV
 ------------------------
 
 The target to be optimized
@@ -120,7 +123,7 @@ We only want a single parameter of the ``Person`` class (namely, the ``Infection
 
     The method described below works in this specific use case, but may not in others. Furthermore, it's implementation is not particularly readable: consider the tradeoff between readability and performance, and what's right for you.
 
-Using the ``getParams``` and ``apply`` methods of the ``GraphNode`` class together, we can obtain a parameter of the node:
+Using the ``getParams`` and ``apply`` methods of the ``GraphNode`` class together, we can obtain a parameter of the node:
 
 .. code-block:: scala
 

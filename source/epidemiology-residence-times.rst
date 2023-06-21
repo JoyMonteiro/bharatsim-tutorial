@@ -1,7 +1,7 @@
 Sojourn times in different compartments
 =========================================
 
-How long does an individual spend in an infected state or compartment? This duration, also known as the _sojourn_ time, isn’t a fixed value, so it’s important to know the distribution of these sojourn times. In Markov-Chain-Monte-Carlo simulations like ours, the sojourn times are exponentially distributed. First we will explain why the distribution is exponential, which can allow us to change our algorithm for non-exponential cases.
+How long does an individual spend in an infected state or compartment? This duration, also known as the *sojourn* time, isn't a fixed value, so it's important to know the distribution of these sojourn times. In Markov-Chain-Monte-Carlo simulations like ours, the sojourn times are exponentially distributed. First we will explain why the distribution is exponential, which can allow us to change our algorithm for non-exponential cases.
 
 We discretise time into small intervals or time-steps of $\Delta t$, so that the total time $T = N \Delta t$, where $N$ is the total number of time-steps. In every small step $\Delta t$ an individual in our disease model has a small probability, $p$, of exiting the compartment. The value of $p$ depends on factors such as the number of individuals in that compartment at that time, and so on.
 

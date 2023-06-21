@@ -72,7 +72,7 @@ The model is built over an SIR model, with most of the changes being made to thr
 
     When ingesting the input data, we define a ``NEIGHBOURS`` relation between two neighbouring houses. However, we cannot register a relation between two nodes if only one of them has been registered. Thus, for every row in the input csv file, we register not just the house mentioned on the row but also all of it's neighbours.
 
-    .. hint:: If you refer back to the final note in the :ref:`Inputs` section, you'll see that registering an identical node multiple times does not lead to the node being duplicated in the graph.
+    .. hint:: If you refer back to the final note in the section on :ref:`Reading inputs from a synthetic population`, you'll see that registering an identical node multiple times does not lead to the node being duplicated in the graph.
 
     .. admonition:: What does what?
       :class: caution

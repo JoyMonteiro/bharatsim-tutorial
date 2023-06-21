@@ -1,39 +1,28 @@
 Getting Started
 ===============
 
-The BharatSim framework is written in Scala 2, so once the source code is obtained, a development environment needs to be set up. The following set of instructions need to be followed to obtain the said development environment. 
-
+The BharatSim framework is written in Scala 2, so once the source code is obtained, a development environment needs to be set up. In this section, we will describe how to this can be done.
 
 Setup Requirements
 ------------------
 
-This section will deal with the preliminary requirements to run BharatSim once you have the source code. BharatSim requires a JDK (Java Development Kit)
+BharatSim requires:
 
-Setting up Scala
-----------------
-
-Scala requires setting up
-
-* JDK (Java Development Kit)
-* Scala Compiler and SBT (Scala Build Tool) and a few tools
+* A JDK (Java Development Kit)
+* A Scala Compiler and SBT (Scala Build Tool)
 
 Installing JDK
 ~~~~~~~~~~~~~~
 
-Java 8 or 11 can be installed from Oracle or through OpenJDK.
-
-`Download OpenJDK <https://adoptium.net/temurin/releases/?version=11>`_. Choose the appropriate operating system with x64 JDK with versions 8 or 11. 
+BharatSim requires a version of Java that is less than Java 17. We recommend using either Java 8 or Java 11, either of which can be obtained from `Oracle <https://www.oracle.com>`_ or `OpenJDK <https://openjdk.org>`_.
 
 Installing Scala with Coursier
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Coursier** can be used to setup Scala in an easy way.
+Scala can be easily set up using *coursier*, the Scala application manager. The installation instructions for coursier can be found on the `coursier site <https://get-coursier.io/docs/cli-installation>`_.
 
 
-Follow the installation instructions at the `Coursier Site <https://get-coursier.io/docs/cli-installation>`_.
-
-
-Once ``cs`` is downloaded, run:
+Once the ``cs`` binary is downloaded, run:
 
 .. code-block:: console
 
@@ -45,14 +34,16 @@ To check whether the set up was successful, run:
 
     $ scala -version  
 
-If the version along with a copyright notice is not returned, then reboot the system and try running the above line of code again. 
+If the version number is not returned, reboot the system and try running the above line of code again. 
 
 Setting up an IDE and First Run
 -------------------------------
 
-The recommended IDE is **IntelliJ Idea**. It provides a lot of features helpful for newcomers to a language. It also handles large projects well.
+The recommended IDE for BharatSim is **IntelliJ Idea**. It provides many features helpful for newcomers to a language. It also handles large projects well.
 
-Running IntelliJ Idea is a bit resource intensive, so if you really have no choice [due to hardware limitations, old systems, etc.], then any text editor works with command line. We talk about IntelliJ Idea and VSCode here.
+However, the additional features of IntelliJ Idea make it slightly resource intensive. A faster alternative is Microsoft's **Visual Studio Code**. 
+
+Here we will describe the setup process using both the IntelliJ Idea and VSCode IDEs. However, please note that the BharatSim code can just as well be edited using a simple text editor, and run with the Scala command line `sbt` tool, described further below. However, this method is not recommended for beginners.
 
 IntelliJ Idea
 ~~~~~~~~~~~~~
@@ -75,7 +66,7 @@ IntelliJ Idea
 
 * Go to File --> Open, and select the ``build.sbt`` file in the BharatSim source code directory. Now, select **Open as Project**. IntelliJ Idea will load the project.
 
-* Now, we **run the SIR Model**. SIR is a simple compartmental model to analyze epidemics, where a person can be either Susceptible (S), Infected (I) or Recovered (R). We will see SIR Model in detail in the Epidemiology section.
+* Now, we will run the example :ref:`The SIR Model` that is included with the BharatSim source code.
 
   * In IntelliJ Idea, on the left is the project directory structure and tree. Navigate to ``BharatSim/src/main/scala/com/bharatsim/examples/epidemiology/sir`` and open the ``Main.scala`` file.
 

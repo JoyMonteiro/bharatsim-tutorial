@@ -17,16 +17,8 @@ By adding this complexity, we can see that the number of individuals at any give
 .. admonition:: Algorithm
    :class: tip
 
-    1.  Divide the total time into steps of $\Delta t$, and at every
-        time-step we loop over all agents.
-    2.  If the agent is susceptible, we compute the number of infected
-        individuals who could potentially infect them ("$I$") in their
-        current location. Then, with some probability $$p_\text{SI} =
-        \lambda_S\frac{I}{N}\Delta t,$$
-        we transition them to the infected compartment.
-    3.  If the agent is already infected, we transition them to the
-        recovered compartment with a probability $$p_\text{IR} =
-        \lambda_I\,\Delta t.$$
+    1.  Divide the total time into steps of $\Delta t$, and at every time-step we loop over all agents.
+    2.  If the agent is susceptible, we compute the number of infected individuals who could potentially infect them ("$I$") in their current location. Then, with some probability $$p_\text{SI} = \lambda_S\frac{I}{N}\Delta t,$$ we transition them to the infected compartment.
+    3.  If the agent is already infected, we transition them to the recovered compartment with a probability $$p_\text{IR} = \lambda_I\,\Delta t.$$
     4.  If they have recovered, do nothing.
-    5.  Repeat the entire process until there are no more infected
-        individuals, or the total time has elapsed.
+    5.  Repeat the entire process until there are no more infected individuals, or the total time has elapsed.

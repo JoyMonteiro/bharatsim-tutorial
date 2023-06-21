@@ -3,7 +3,7 @@ Interventions in BharatSim
 
 Interventions are punctual events that occur when some external condition is satisfied. These could, for example, be policy-level decisions made by governments, or environmental factors like the introduction of new viral strains, for example. Each intervention is identified uniquely by the the ``Name`` of the intervention. Additionally, each intervention requies an `activation condition`, and a `deactivation condition`. These conditions are ``boolean`` decisions.
 
-Additionally, the user can further define an optional `activationAction` and a `perTickAction`.
+Additionally, the user can further define an optional ``activationAction`` and a ``perTickAction``.
 
  * ``activationAction``: an action that is invoked whenever the intervention is activated.
 
@@ -15,7 +15,7 @@ There are four different intervention classes available in BharatSim
 ``Intervention``
 ~~~~~~~~~~~~~~~~
 
-This is a generic intervention that can be invoked several times or once when the activation condition is met based on the parameters passed. This can be used to implement lockdowns during an epidemic every time the infected fraction of agent reaches a certain threshold.
+This is a generic intervention that can be invoked whenever the activation condition is met based on the parameters passed. This can be used to implement lockdowns during an epidemic every time the infected fraction of agent reaches a certain threshold, for example.
 
 Five parameters can be passed ``Intervention`` object:
 
@@ -28,7 +28,7 @@ Five parameters can be passed ``Intervention`` object:
 Example using the ``Intervention`` object
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Here we will use the ``Intervention`` class to implement a lockdown every time the number of infected agents are greater than or equal to 2000. First, we will define the intervention named addLockdown and initialise the variables.
+Here we will use the ``Intervention`` class to implement a two-week lockdown every time the number of infected agents are greater than or equal to 2000. First, we will define the intervention named addLockdown and initialise the variables.
 
   ``interventionActivatedAt`` stores the information about when the intervention was activated. Here it is initialised to be zero and 
   will be updated once the intervention is activated.
@@ -55,16 +55,14 @@ Here we will use the ``Intervention`` class to implement a lockdown every time t
     }
   }
 
-Now we have to create an instance of the ``Intervention`` object. Here we define ``intervention`` and pass the values defined 
-in earlier` to the ``Intervention`` object.
+Now we have to create an instance of the ``Intervention`` object and pass the values defined earlier it:
 
 .. code-block:: scala
 
     val intervention =
     Intervention(interventionName, activationCondition, deActivationCondition, firstTimeExecution)
 
-Now we define a new schedule that has to come into effect once the intervention is activated. Here we define the ``lockdownSchedule`` such that all agent stays in the house throughout the day. Here the ``(0,1)`` passed to the ``add[House]`` makes the agent stay in its house from tick 0 to the end of tick 1 in a day.
-Here one day is defined as having two ticks, i.e. 0 and 1. So this makes the agent stay home for the entire day as long as the intervention remains activated.
+Next, we define a new schedule that has to come into effect once the intervention is activated. Here we define the ``lockdownSchedule`` such that all agent stays in the house throughout the day. The code below makes the agent stay home for the entire day as long as the intervention remains activated.
 
 .. code-block:: scala
 
@@ -133,10 +131,9 @@ Five paramertes can be passed to the ``IntervalBasedIntervention`` object:
 Example using the ``IntervalBasedIntervention`` object
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We will try to implement during the 50th to the 100th tick, i.e. for 25 days. (Since in 1 day is defined as two ticks by default)
+We will try to implement during the 50th to the 100th tick, i.e. for 25 days.
 
-First we will define the variables ``interventionName``. In the function call of IntervalBasedIntervention(), we will pass the 
-``interventionName``, ``startTick`` and ``endTick``.
+First we will define the variables ``interventionName``. In the function call of ``IntervalBasedIntervention()``, we will pass the ``interventionName``, ``startTick`` and ``endTick``.
 
 .. code-block:: scala
 
@@ -167,7 +164,7 @@ Now we will register both the intervention as well as the schedule.
     )
     )
 
-The entire definition of ``addLockdown`` intervention using the IntervalBasedIntervention is given below:
+The entire definition of ``addLockdown`` intervention using the ``IntervalBasedIntervention`` is given below:
 
 .. code-block:: scala
 

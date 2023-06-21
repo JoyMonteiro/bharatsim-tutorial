@@ -1,7 +1,7 @@
 Framework Basics
 ================
 
-The following sections under Framework Basics explore different essentials components of the framework that is required to begin coding. 
+The following sections describe the basics of the BharatSim simulation framework: the different components of a simulation, how to read and write CSV files, how to introduce social interventions, and how to optimise your code for faster performance.
 
 .. toctree:: 
    :titlesonly:
@@ -9,4 +9,4 @@ The following sections under Framework Basics explore different essentials compo
    frameworkbasics-components
    frameworkbasics-inputoutput
    frameworkbasics-social
-   frameworkbasics-Optimization
+   frameworkbasics-optimization
