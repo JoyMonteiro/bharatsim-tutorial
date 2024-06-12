@@ -151,6 +151,10 @@ The csvDataExtractor function is the same and changes are made after the nodes (
       graphData.addRelations(studiesAt, studentOf)
     }
 
+
+Implementing Schedules
+^^^^^^^^^^^^^^^^^^^^^^
+
 After this distinction has been made, the changes in schedules have to be made. Employee and student schedule are just when they leave for their the house and when they return. First we need to define an hour to be ``myTick`` and there are 24 hours in ``myDay``. Before ``create24HourSchedules`` can be made, ``myTick`` and ``myDay`` needs to be defined outside the main function. 
 
 .. code-block:: scala 
@@ -181,159 +185,324 @@ With these values defined, ``create24HourSchedules`` can be made. However, when 
 
 .. note:: The timings of departure and return are to be made in the 24 hour format.  
 
-The whole main file code is 
+
+Handling Current Locations
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Now, we also need to handle the location of the individual at every step to ensure that the individual is only in contact with the people in the same location. This is done by adding a new ``currentLocation`` parameter in the person class. We modify the constructor to include this parameter.
 
 .. code-block:: scala 
 
-  package sir
+    case class Person(id: Long, age: Int, infectionState: InfectionStatus, infectionDay: Int, currentLocation: String = "") extends Agent {
 
-  import java.util.Date
-  import com.bharatsim.engine.ContextBuilder._
-  import com.bharatsim.engine._
-  import com.bharatsim.engine.actions.StopSimulation
-  import com.bharatsim.engine.basicConversions.decoders.DefaultDecoders._
-  import com.bharatsim.engine.basicConversions.encoders.DefaultEncoders._
-  import com.bharatsim.engine.dsl.SyntaxHelpers._
-  import com.bharatsim.engine.execution.Simulation
-  import com.bharatsim.engine.graph.ingestion.{GraphData, Relation}
-  import com.bharatsim.engine.graph.patternMatcher.MatchCondition._
-  import com.bharatsim.engine.listeners.{CsvOutputGenerator, SimulationListenerRegistry}
-  import com.bharatsim.engine.models.Agent
-  import com.bharatsim.engine.utils.Probability.biasedCoinToss
-  import com.bharatsim.examples.epidemiology.sir.InfectionStatus._
-  import com.typesafe.scalalogging.LazyLogging
+Then, we add a behaviour to update the current location of the person at every step.
 
-  object Main extends LazyLogging {
-    private val initialInfectedFraction = 0.01
+.. code-block:: scala 
 
-    private val myTick: ScheduleUnit = new ScheduleUnit(1)
-    private val myDay: ScheduleUnit = new ScheduleUnit(myTick * 24)
+    private def getCurrentLocation(context: Context): Option[String] = {
+      val schedule = context.fetchScheduleFor(this).get
+      val currentStep = context.getCurrentStep
+      val placeType: String = schedule.getForStep(currentStep)
 
-    def main(args: Array[String]): Unit = {
+      Some(placeType)
+    }
 
-      var beforeCount = 0
-      val simulation = Simulation()
-
-      simulation.ingestData(implicit context => {
-        ingestCSVData("citizen10k.csv", csvDataExtractor)
-        logger.debug("Ingestion done")
-      })
-
-      simulation.defineSimulation(implicit context => {
-        create24HourSchedules()
-
-        registerAction(
-          StopSimulation,
-          (c: Context) => {
-            getInfectedCount(c) == 0
+    private def updateCurrentLocation(context: Context): Unit = {
+      val currentLocationOption = getCurrentLocation(context)
+      currentLocationOption match {
+        case Some(x) => {
+          if (this.currentLocation != x) {
+            updateParam("currentLocation", x)
           }
-        )
+        }
 
-        beforeCount = getInfectedCount(context)
+        case _ => 
+      }
+    }
 
-        registerAgent[Person]
+    addBehaviour(updateCurrentLocation)
 
-        val currentTime = new Date().getTime
+We then also need to update the ``checkForInfection`` function to only check for infections in the same location. We start by counting the total number of people in the Person's current location, and then count the number of infected people in the same location. Then, we modify our infection rate calculation to be based on the number of infected people in the same location.
 
-        SimulationListenerRegistry.register(
-          new CsvOutputGenerator("src/main" + currentTime + ".csv", new SIROutputSpec(context))
-        )
-      })
+.. code-block:: scala
 
-      simulation.onCompleteSimulation { implicit context =>
-        printStats(beforeCount)
-        teardown()
+    import com.bharatsim.engine.graph.patternMatcher.MatchCondition._
+
+    val neighbours = decodedPlace.getConnections(decodedPlace.getRelation[Person]().get)
+    val totalNeighbourCount = decodedPlace.getConnectionCount(decodedPlace.getRelation[Person]().get, ("currentLocation" equ currentLocation))
+
+    if (totalNeighbourCount > 0) {
+      val infectedNeighbourCount = decodedPlace
+        .getConnectionCount(decodedPlace.getRelation[Person]().get, ("currentLocation" equ currentLocation) and ("infectionState" equ Infected))
+
+      val finalInfectionRate = infectionRate * infectedNeighbourCount / totalNeighbourCount
+      val toBeInfected = biasedCoinToss(finalInfectionRate)
+
+      if (toBeInfected) {
+        updateParam("infectionState", Infected)
+      }
+    }
+
+
+The final code for the ``Main`` and ``Person`` files are as follows:
+
+
+.. tabs::
+
+  .. code-tab:: scala Main.scala 
+
+    package sir
+
+    import java.util.Date
+    import com.bharatsim.engine.ContextBuilder._
+    import com.bharatsim.engine._
+    import com.bharatsim.engine.actions.StopSimulation
+    import com.bharatsim.engine.basicConversions.decoders.DefaultDecoders._
+    import com.bharatsim.engine.basicConversions.encoders.DefaultEncoders._
+    import com.bharatsim.engine.dsl.SyntaxHelpers._
+    import com.bharatsim.engine.execution.Simulation
+    import com.bharatsim.engine.graph.ingestion.{GraphData, Relation}
+    import com.bharatsim.engine.graph.patternMatcher.MatchCondition._
+    import com.bharatsim.engine.listeners.{CsvOutputGenerator, SimulationListenerRegistry}
+    import com.bharatsim.engine.models.Agent
+    import com.bharatsim.engine.utils.Probability.biasedCoinToss
+    import com.bharatsim.examples.epidemiology.sir.InfectionStatus._
+    import com.typesafe.scalalogging.LazyLogging
+
+    object Main extends LazyLogging {
+      private val initialInfectedFraction = 0.01
+
+      private val myTick: ScheduleUnit = new ScheduleUnit(1)
+      private val myDay: ScheduleUnit = new ScheduleUnit(myTick * 24)
+
+      def main(args: Array[String]): Unit = {
+
+        var beforeCount = 0
+        val simulation = Simulation()
+
+        simulation.ingestData(implicit context => {
+          ingestCSVData("citizen10k.csv", csvDataExtractor)
+          logger.debug("Ingestion done")
+        })
+
+        simulation.defineSimulation(implicit context => {
+          create24HourSchedules()
+
+          registerAction(
+            StopSimulation,
+            (c: Context) => {
+              getInfectedCount(c) == 0
+            }
+          )
+
+          beforeCount = getInfectedCount(context)
+
+          registerAgent[Person]
+
+          val currentTime = new Date().getTime
+
+          SimulationListenerRegistry.register(
+            new CsvOutputGenerator("src/main" + currentTime + ".csv", new SIROutputSpec(context))
+          )
+        })
+
+        simulation.onCompleteSimulation { implicit context =>
+          printStats(beforeCount)
+          teardown()
+        }
+
+        val startTime = System.currentTimeMillis()
+        simulation.run()
+        val endTime = System.currentTimeMillis()
+        logger.info("Total time: {} s", (endTime - startTime) / 1000)
       }
 
-      val startTime = System.currentTimeMillis()
-      simulation.run()
-      val endTime = System.currentTimeMillis()
-      logger.info("Total time: {} s", (endTime - startTime) / 1000)
-    }
+      private def create24HourSchedules()(implicit context: Context): Unit = {
+        val employeeSchedule = (myDay, myTick)
+          .add[House](0, 8)
+          .add[Office](9, 17)
+          .add[House](18,23)
 
-    private def create24HourSchedules()(implicit context: Context): Unit = {
-      val employeeSchedule = (myDay, myTick)
-        .add[House](0, 8)
-        .add[Office](9, 17)
-        .add[House](18,23)
+        val studentSchedule = (myDay, myTick)
+          .add[House](0, 8)
+          .add[Office](9, 16)
+          .add[House](17, 23)
 
-      val studentSchedule = (myDay, myTick)
-        .add[House](0, 8)
-        .add[Office](9, 16)
-        .add[House](17, 23)
-
-      registerSchedules(
-        (employeeSchedule, (agent: Agent, _: Context) => agent.asInstanceOf[Person].age >= 18, 1),
-        (studentSchedule, (agent: Agent, _: Context) => agent.asInstanceOf[Person].age < 18, 2)
-      )
-    }
-
-    private def csvDataExtractor(map: Map[String, String])(implicit context: Context): GraphData = {
-
-      val citizenId = map("Agent_ID").toLong
-      val age = map("Age").toInt
-      val initialInfectionState = if (biasedCoinToss(initialInfectedFraction)) "Infected" else "Susceptible"
-
-      val homeId = map("HHID").toLong
-      val schoolId = map("school_id").toLong
-      val officeId = map("WorkPlaceID").toLong
-
-      val citizen: Person = Person(
-        citizenId,
-        age,
-        InfectionStatus.withName(initialInfectionState),
-        0
-      )
-
-      val home = House(homeId)
-      val staysAt = Relation[Person, House](citizenId, "STAYS_AT", homeId)
-      val memberOf = Relation[House, Person](homeId, "HOUSES", citizenId)
-
-      val graphData = GraphData()
-      graphData.addNode(citizenId, citizen)
-      graphData.addNode(homeId, home)
-      graphData.addRelations(staysAt, memberOf)
-
-      if (age >= 18) {
-        val office = Office(officeId)
-        val worksAt = Relation[Person, Office](citizenId, "WORKS_AT", officeId)
-        val employerOf = Relation[Office, Person](officeId, "EMPLOYER_OF", citizenId)
-
-        graphData.addNode(officeId, office)
-        graphData.addRelations(worksAt, employerOf)
-      } else {
-        val school = School(schoolId)
-        val studiesAt = Relation[Person, School](citizenId, "STUDIES_AT", schoolId)
-        val studentOf = Relation[School, Person](schoolId, "STUDENT_OF", citizenId)
-
-        graphData.addNode(schoolId, school)
-        graphData.addRelations(studiesAt, studentOf)
+        registerSchedules(
+          (employeeSchedule, (agent: Agent, _: Context) => agent.asInstanceOf[Person].age >= 18, 1),
+          (studentSchedule, (agent: Agent, _: Context) => agent.asInstanceOf[Person].age < 18, 2)
+        )
       }
 
-      graphData
+      private def csvDataExtractor(map: Map[String, String])(implicit context: Context): GraphData = {
+
+        val citizenId = map("Agent_ID").toLong
+        val age = map("Age").toInt
+        val initialInfectionState = if (biasedCoinToss(initialInfectedFraction)) "Infected" else "Susceptible"
+
+        val homeId = map("HHID").toLong
+        val schoolId = map("school_id").toLong
+        val officeId = map("WorkPlaceID").toLong
+
+        val citizen: Person = Person(
+          citizenId,
+          age,
+          InfectionStatus.withName(initialInfectionState),
+          0
+        )
+
+        val home = House(homeId)
+        val staysAt = Relation[Person, House](citizenId, "STAYS_AT", homeId)
+        val memberOf = Relation[House, Person](homeId, "HOUSES", citizenId)
+
+        val graphData = GraphData()
+        graphData.addNode(citizenId, citizen)
+        graphData.addNode(homeId, home)
+        graphData.addRelations(staysAt, memberOf)
+
+        if (age >= 18) {
+          val office = Office(officeId)
+          val worksAt = Relation[Person, Office](citizenId, "WORKS_AT", officeId)
+          val employerOf = Relation[Office, Person](officeId, "EMPLOYER_OF", citizenId)
+
+          graphData.addNode(officeId, office)
+          graphData.addRelations(worksAt, employerOf)
+        } else {
+          val school = School(schoolId)
+          val studiesAt = Relation[Person, School](citizenId, "STUDIES_AT", schoolId)
+          val studentOf = Relation[School, Person](schoolId, "STUDENT_OF", citizenId)
+
+          graphData.addNode(schoolId, school)
+          graphData.addRelations(studiesAt, studentOf)
+        }
+
+        graphData
+      }
+
+      private def printStats(beforeCount: Int)(implicit context: Context): Unit = {
+        val afterCountSusceptible = getSusceptibleCount(context)
+        val afterCountInfected = getInfectedCount(context)
+        val afterCountRecovered = getRemovedCount(context)
+
+        logger.info("Infected before: {}", beforeCount)
+        logger.info("Infected after: {}", afterCountInfected)
+        logger.info("Recovered: {}", afterCountRecovered)
+        logger.info("Susceptible: {}", afterCountSusceptible)
+      }
+
+      private def getSusceptibleCount(context: Context) = {
+        context.graphProvider.fetchCount("Person", "infectionState" equ Susceptible)
+      }
+
+      private def getInfectedCount(context: Context): Int = {
+        context.graphProvider.fetchCount("Person", ("infectionState" equ Infected))
+      }
+
+      private def getRemovedCount(context: Context) = {
+        context.graphProvider.fetchCount("Person", "infectionState" equ Removed)
+      }
     }
 
-    private def printStats(beforeCount: Int)(implicit context: Context): Unit = {
-      val afterCountSusceptible = getSusceptibleCount(context)
-      val afterCountInfected = getInfectedCount(context)
-      val afterCountRecovered = getRemovedCount(context)
+  .. code-tab:: scala Person.scala 
 
-      logger.info("Infected before: {}", beforeCount)
-      logger.info("Infected after: {}", afterCountInfected)
-      logger.info("Recovered: {}", afterCountRecovered)
-      logger.info("Susceptible: {}", afterCountSusceptible)
-    }
+    package sir
 
-    private def getSusceptibleCount(context: Context) = {
-      context.graphProvider.fetchCount("Person", "infectionState" equ Susceptible)
-    }
+    import com.bharatsim.engine.Context
+    import com.bharatsim.engine.basicConversions.decoders.DefaultDecoders._
+    import com.bharatsim.engine.basicConversions.encoders.DefaultEncoders._
+    import com.bharatsim.engine.graph.GraphNode
+    import com.bharatsim.engine.models.{Agent, Node}
+    import com.bharatsim.engine.graph.patternMatcher.MatchCondition._
+    import com.bharatsim.engine.utils.Probability.{toss, biasedCoinToss}
+    import sir.InfectionStatus._
 
-    private def getInfectedCount(context: Context): Int = {
-      context.graphProvider.fetchCount("Person", ("infectionState" equ Infected))
-    }
+    case class Person(id: Long, age: Int, infectionState: InfectionStatus, infectionDay: Int, currentLocation: String = "") extends Agent {
+      final val numberOfTicksInADay: Int = 24
+      private val incrementInfectionDuration: Context => Unit = (context: Context) => {
+        if (isInfected && context.getCurrentStep % numberOfTicksInADay == 0) {
+          updateParam("infectionDay", infectionDay + 1)
+        }
+      }
 
-    private def getRemovedCount(context: Context) = {
-      context.graphProvider.fetchCount("Person", "infectionState" equ Removed)
+      private val checkForInfection: Context => Unit = (context: Context) => {
+        if (isSusceptible) {
+          val infectionRate = Disease.beta
+
+          val schedule = context.fetchScheduleFor(this).get
+
+          val currentStep = context.getCurrentStep
+          val placeType: String = schedule.getForStep(currentStep)
+
+          val places = getConnections(getRelation(placeType).get).toList
+
+          if (places.nonEmpty) {
+            val place = places.head
+            val decodedPlace = decodeNode(placeType, place)
+
+            val neighbours = decodedPlace.getConnections(decodedPlace.getRelation[Person]().get)
+            val totalNeighbourCount = decodedPlace.getConnectionCount(decodedPlace.getRelation[Person]().get, ("currentLocation" equ currentLocation))
+
+            if (totalNeighbourCount > 0) {
+              val infectedNeighbourCount = decodedPlace
+                .getConnectionCount(decodedPlace.getRelation[Person]().get, ("currentLocation" equ currentLocation) and ("infectionState" equ Infected))
+
+              val finalInfectionRate = infectionRate * infectedNeighbourCount / totalNeighbourCount
+              val toBeInfected = biasedCoinToss(finalInfectionRate)
+
+              if (toBeInfected) {
+                updateParam("infectionState", Infected)
+              }
+            }
+          }
+        }
+      }
+
+      private val checkForRecovery: Context => Unit = (context: Context) => {
+        if (isInfected && infectionDay == Disease.lastDay)
+          updateParam("infectionState", Removed)
+      }
+
+      def isSusceptible: Boolean = infectionState == Susceptible
+
+      def isInfected: Boolean = infectionState == Infected
+
+      def isRecovered: Boolean = infectionState == Removed
+
+      private def getCurrentLocation(context: Context): Option[String] = {
+        val schedule = context.fetchScheduleFor(this).get
+        val currentStep = context.getCurrentStep
+        val placeType: String = schedule.getForStep(currentStep)
+
+        Some(placeType)
+      }
+
+      private def updateCurrentLocation(context: Context): Unit = {
+        val currentLocationOption = getCurrentLocation(context)
+        currentLocationOption match {
+          case Some(x) => {
+            if (this.currentLocation != x) {
+              updateParam("currentLocation", x)
+            }
+          }
+
+          case _ => 
+        }
+      }
+
+      private def decodeNode(classType: String, node: GraphNode): Node = {
+        classType match {
+          case "House" => node.as[House]
+          case "Office" => node.as[Office]
+          case "School" => node.as[School]
+        }
+      }
+
+      addBehaviour(incrementInfectionDuration)
+      addBehaviour(checkForInfection)
+      addBehaviour(checkForRecovery)
+      addBehaviour(updateCurrentLocation)
+
+      addRelation[House]("STAYS_AT")
+      addRelation[Office]("WORKS_AT")
+      addRelation[School]("STUDIES_AT")
     }
-  }
 
