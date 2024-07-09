@@ -188,16 +188,19 @@ With these values defined, ``create24HourSchedules`` can be made. However, when 
 
 Handling Current Locations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Now, we also need to handle the location of the individual at every step to ensure that the individual is only in contact with the people in the same location. This is done by adding a new ``currentLocation`` parameter in the person class. We modify the constructor to include this parameter.
+Now, we also need to handle the location of the individual at every step to ensure that the individual is only in contact with the people in the same location. This is done by adding a new ``currentLocation`` parameter in the ``Person`` class. In order to implement this, we add a new attribute to the ``Person`` class called ``currentLocation`` which stores the exact current location of the agent. This attribute has to be dynamically updated at every time-step based on the agent's schedule. This is done by adding a new behaviour ``updateCurrentLocation``. This is implemented below.
 
-.. code-block:: scala 
+.. code-block:: scala
 
+    // Modifying the Person class to include the currentLocation attribute
     case class Person(id: Long, age: Int, infectionState: InfectionStatus, infectionDay: Int, currentLocation: String = "") extends Agent {
 
-Then, we add a behaviour to update the current location of the person at every step.
 
+Before we implement the ``updateCurrentLocation`` behaviour, we need understand the ``Some`` and ``Option`` classes in Scala. The ``Option`` class is a container that represents optionality and it may or may not contain a value. The ``Some`` and ``None`` classes are subclasses of the ``Option`` class. If the value is present, it is wrapped in a ``Some`` class, otherwise it is wrapped in a ``None`` class. You can read more about them over `here <https://docs.scala-lang.org/scala3/book/fp-functional-error-handling.html#using-optionsomenone>`_. Then, we can implement the following code:
+ 
 .. code-block:: scala 
 
+    // Adding a behaviour to update the current location of the person
     private def getCurrentLocation(context: Context): Option[String] = {
       val schedule = context.fetchScheduleFor(this).get
       val currentStep = context.getCurrentStep
@@ -215,13 +218,16 @@ Then, we add a behaviour to update the current location of the person at every s
           }
         }
 
+        // Case: 'None' is returned
         case _ => 
       }
     }
 
     addBehaviour(updateCurrentLocation)
 
-We then also need to update the ``checkForInfection`` function to only check for infections in the same location. We start by counting the total number of people in the Person's current location, and then count the number of infected people in the same location. Then, we modify our infection rate calculation to be based on the number of infected people in the same location.
+We then also need to update the ``checkForInfection`` function to only check for infections in the same location. This is important because currently, the infection rate for a person is calculated based on the total number of people connected to the person, regardless of their location decided by the schedule (Work/School/Home). This is not accurate, as a person can only infect others, or get infected by others, if they are in the same location at the same time.
+
+We implement this by counting the total number of people in the Person's current location, and then count the number of infected people in the same location. Then, we modify our infection rate calculation to be based on the number of infected people in the same location.
 
 .. code-block:: scala
 
