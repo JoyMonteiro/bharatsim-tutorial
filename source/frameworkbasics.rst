@@ -8,5 +8,5 @@ The following sections describe the basics of the BharatSim simulation framework
    
    frameworkbasics-components
    frameworkbasics-inputoutput
-   frameworkbasics-social
+   frameworkbasics-interventions
    frameworkbasics-optimization

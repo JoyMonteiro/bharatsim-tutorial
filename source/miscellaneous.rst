@@ -63,7 +63,7 @@ One can also run a Main file by creating a `.jar` file, as described above and t
 Saving location-level information from the simulation
 -----------------------------------------------------
 
-.. tip:: Before reading this section, it's recommended that you read the basics in the :ref:`Outputs` section.
+.. tip:: Before reading this section, it's recommended that you read the basics in the section on :ref:`Writing outputs to a CSV file`.
 
 In this section, we discuss how to create the following output:
 

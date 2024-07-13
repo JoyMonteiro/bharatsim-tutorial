@@ -208,7 +208,7 @@ Five parameters can be passed to the ``OffsetBasedIntervention`` object:
     * ``firstTimeActionFunc``:This is an optional function which gets executed when simulation starts.
     * ``whenActiveActionFunc``: This is an optional function executed per tick when the simulation is active.
 
-Example suing the ``OffsetBasedIntervention`` object
+Example using the ``OffsetBasedIntervention`` object
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We will implement a lockdown when the number of infected individuals is greater than or equal to 2000 and stays active for 28 ticks
